@@ -428,11 +428,18 @@ function renderProductsSingle(category) {
       <div class="p-4">
         <h3 class="font-bold text-lg mb-2 text-red-900">${p.name}</h3>
         <p class="text-gray-600 text-sm mb-3">${p.description || ''}</p>
-        <div class="flex justify-between items-center">
+        <div class="flex justify-between items-center gap-2">
           <span class="text-2xl font-bold text-red-700">${money(p.price)}</span>
-          <button class="add-to-cart px-4 py-2 rounded-lg font-bold text-white hover:opacity-90"
-                  style="background-color:#dc2626"
-                  data-product='${JSON.stringify(payload)}'>Agregar</button>
+          <div class="product-card-actions flex items-center gap-2 flex-1 justify-end">
+            <span class="product-like-wrap">
+              <button type="button" class="product-like-btn" aria-label="Me gusta" title="Me gusta">
+                <svg class="heart-icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"/></svg>
+              </button>
+            </span>
+            <button class="add-to-cart px-4 py-2 rounded-lg font-bold text-white hover:opacity-90"
+                    style="background-color:#dc2626"
+                    data-product='${JSON.stringify(payload)}'>Agregar</button>
+          </div>
         </div>
       </div>
     `;
@@ -484,11 +491,18 @@ function renderProductsAll() {
         <div class="p-4">
           <h3 class="font-bold text-lg mb-2 text-red-900">${p.name}</h3>
           <p class="text-gray-600 text-sm mb-3">${p.description || ''}</p>
-          <div class="flex justify-between items-center">
+          <div class="flex justify-between items-center gap-2">
             <span class="text-2xl font-bold text-red-700">${money(p.price)}</span>
-            <button class="add-to-cart px-4 py-2 rounded-lg font-bold text-white hover:opacity-90"
-                    style="background-color:#dc2626"
-                    data-product='${JSON.stringify(payload)}'>Agregar</button>
+            <div class="product-card-actions flex items-center gap-2 flex-1 justify-end">
+              <span class="product-like-wrap">
+                <button type="button" class="product-like-btn" aria-label="Me gusta" title="Me gusta">
+                  <svg class="heart-icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"/></svg>
+                </button>
+              </span>
+              <button class="add-to-cart px-4 py-2 rounded-lg font-bold text-white hover:opacity-90"
+                      style="background-color:#dc2626"
+                      data-product='${JSON.stringify(payload)}'>Agregar</button>
+            </div>
           </div>
         </div>
       `;
@@ -814,8 +828,39 @@ function printOrderTicket(order) {
   win.print();
 }
 
+// --------- Corazón like (burst de corazoncitos) ----------
+function playHeartBurst(wrapEl) {
+  if (!wrapEl || !wrapEl.classList.contains('product-like-wrap')) return;
+  var count = 7;
+  var radius = 38;
+  var heartSvg = '<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor"><path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"/></svg>';
+  for (var i = 0; i < count; i++) {
+    var angle = -90 + (i / (count - 1 || 1)) * 100 - 50;
+    var rad = (angle * Math.PI) / 180;
+    var bx = Math.sin(rad) * radius;
+    var by = -Math.cos(rad) * radius;
+    var el = document.createElement('span');
+    el.className = 'heart-burst-item';
+    el.style.setProperty('--bx', bx + 'px');
+    el.style.setProperty('--by', by + 'px');
+    el.innerHTML = heartSvg;
+    wrapEl.appendChild(el);
+    setTimeout(function (node) {
+      if (node.parentNode) node.parentNode.removeChild(node);
+    }, 600, el);
+  }
+}
+
 // --------- Eventos globales ----------
 document.addEventListener('click', (e) => {
+  // corazón like (burst)
+  var likeBtn = e.target.closest('.product-like-btn');
+  if (likeBtn) {
+    var wrap = likeBtn.closest('.product-like-wrap');
+    if (wrap) playHeartBurst(wrap);
+    return;
+  }
+
   // cambiar categoría
   if (e.target.classList.contains('category-btn') || (e.target.closest && e.target.closest('.category-btn'))) {
   const btn = e.target.closest('.category-btn');

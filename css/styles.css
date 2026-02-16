@@ -81,6 +81,79 @@ body {
   box-shadow: 0 10px 25px rgba(8, 8, 8, 0.15);
 }
 
+/* Corazón tipo like en tarjeta de producto */
+.product-like-wrap {
+  position: relative;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.product-like-btn {
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  border: 1px solid #e5e7eb;
+  background: #fff;
+  cursor: pointer;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  padding: 0;
+  transition: transform 0.2s, box-shadow 0.2s;
+}
+
+.product-like-btn:hover {
+  transform: scale(1.05);
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+}
+
+.product-like-btn .heart-icon {
+  width: 20px;
+  height: 20px;
+  color: #dc2626;
+  pointer-events: none;
+}
+
+/* Corazoncitos del burst (like) */
+.heart-burst-item {
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  width: 14px;
+  height: 14px;
+  margin-left: -7px;
+  margin-top: -7px;
+  pointer-events: none;
+  color: #dc2626;
+  animation: heart-burst-out 0.55s ease-out forwards;
+}
+
+.heart-burst-item svg {
+  width: 100%;
+  height: 100%;
+  display: block;
+}
+
+@keyframes heart-burst-out {
+  0% {
+    transform: translate(0, 0) scale(0.4);
+    opacity: 1;
+  }
+  35% {
+    transform: translate(var(--bx), var(--by)) scale(1);
+    opacity: 1;
+  }
+  70% {
+    transform: translate(var(--bx), var(--by)) scale(0.9);
+    opacity: 0.95;
+  }
+  100% {
+    transform: translate(0, 0) scale(0.3);
+    opacity: 0;
+  }
+}
+
 /* Scrollbar oculto para carrusel de categorías */
 .scrollbar-hide {
   -ms-overflow-style: none;
