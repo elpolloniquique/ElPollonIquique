@@ -3,14 +3,17 @@
   --font-family: 'Segoe UI', system-ui, -apple-system, BlinkMacSystemFont, 'Helvetica Neue', Tahoma, Geneva, Verdana, sans-serif;
   --text-xs: 0.75rem;    /* 12px */
   --text-sm: 0.875rem;   /* 14px */
-  --text-base: 1rem;     /* 16px */
-  --text-lg: 1.125rem;   /* 18px */
-  --text-xl: 1.25rem;    /* 20px */
-  --text-2xl: 1.5rem;    /* 24px */
-  --text-3xl: 1.875rem; /* 30px */
-  --line-normal: 1.4;
-  --line-tight: 1.25;
+  --text-base: 0.9375rem;/* 15px */
+  --text-md: 1rem;       /* 16px */
+  --text-lg: 1.0625rem; /* 17px */
+  --text-xl: 1.125rem;   /* 18px */
+  --text-2xl: 1.25rem;   /* 20px */
+  --text-3xl: 1.4375rem; /* 23px */
+  --line-normal: 1.45;
+  --line-tight: 1.3;
   --touch-min: 44px;
+  --letter-tight: 0.01em;
+  --letter-heading: 0.02em;
 }
 
 html {
@@ -23,11 +26,13 @@ body {
   font-family: var(--font-family);
   font-size: var(--text-base);
   line-height: var(--line-normal);
+  letter-spacing: var(--letter-tight);
   margin: 0;
   padding: 0;
   padding-bottom: 100px;
   -webkit-text-size-adjust: 100%;
   -webkit-font-smoothing: antialiased;
+  text-rendering: optimizeLegibility;
 }
 /* ================= HEADER LINKS tipo menú (DELIVERY / RESERVAS / RETIROS) ================= */
 .pedido-link{
@@ -1207,11 +1212,14 @@ header .max-w-7xl{
 
 
 
-/* ===== GRID PRODUCTOS AUTO RESPONSIVE ===== */
+/* ===== GRID PRODUCTOS AUTO RESPONSIVE + CENTRADO ===== */
 .products-grid{
   display: grid;
   gap: clamp(12px, 1.8vw, 20px);
   grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+  justify-items: center;
+  margin-left: auto;
+  margin-right: auto;
 }
 
 /* en pantallas muy chicas */
@@ -1225,22 +1233,25 @@ header .max-w-7xl{
 .product-card{
   border-radius: 16px;
   overflow: hidden;
+  width: 100%;
+  max-width: 100%;
 }
 
 .product-image{
   width: 100%;
-  aspect-ratio: 4 / 3;   /* mantiene proporción bonita */
+  aspect-ratio: 4 / 3;
   object-fit: cover;
 }
 
 /* textos dentro (coherentes con escala global) */
 .product-card h3{
-  font-size: clamp(0.9375rem, 1.4vw, 1.125rem);
+  font-size: clamp(0.875rem, 1.3vw, 1.0625rem);
   font-weight: 700;
+  letter-spacing: var(--letter-tight);
 }
 .product-card p{
   font-size: var(--text-xs);
-  line-height: 1.35;
+  line-height: 1.4;
 }
 
 /* ===== HERO BANNER RESPONSIVE ===== */
@@ -1250,43 +1261,67 @@ header .max-w-7xl{
 
 
 
-/* ===== TIPOGRAFÍA UNIFORME (escala profesional) ===== */
+/* ===== TIPOGRAFÍA UNIFORME Y PROFESIONAL ===== */
+h1, h2, h3, h4 { font-family: var(--font-family); letter-spacing: var(--letter-heading); }
 h1 { font-size: var(--text-2xl); font-weight: 700; line-height: var(--line-tight); }
-h2 { font-size: clamp(1.125rem, 2.2vw, 1.75rem); font-weight: 700; line-height: var(--line-tight); }
-h3 { font-size: clamp(1rem, 1.5vw, 1.375rem); font-weight: 700; line-height: var(--line-tight); }
+h2 { font-size: clamp(1.0625rem, 2vw, 1.3125rem); font-weight: 700; line-height: var(--line-tight); }
+h3 { font-size: clamp(1rem, 1.4vw, 1.1875rem); font-weight: 700; line-height: var(--line-tight); }
 p, li { font-size: var(--text-sm); line-height: var(--line-normal); }
 button, a, .pedido-link { font-size: inherit; font-family: var(--font-family); }
-.aviso { font-size: var(--text-sm); }
-.aviso h2 { font-size: clamp(1rem, 2vw, 1.25rem); font-weight: 600; }
-/* Títulos de sección (Nuestro Menú, etc.) */
+/* Tamaños uniformes en secciones principales (sin romper badges/iconos) */
+section .text-sm { font-size: var(--text-sm); }
+section .text-lg { font-size: var(--text-lg); }
+section .text-xl { font-size: var(--text-xl); }
+section .text-2xl { font-size: var(--text-2xl); }
+.aviso { font-size: var(--text-sm); text-align: center; }
+.aviso h2 { font-size: clamp(0.9375rem, 1.8vw, 1.125rem); font-weight: 600; }
+/* Títulos de sección centrados y ordenados */
+section h2,
 section h2.text-2xl,
-section h2[class*="text-2xl"] { font-size: clamp(1.25rem, 3vw, 1.5rem) !important; font-weight: 700; }
+section h2[class*="text-2xl"] { font-size: clamp(1.0625rem, 2.2vw, 1.3125rem) !important; font-weight: 700; text-align: center; }
 section h3.text-1xl,
 section h3[class*="text-1xl"],
-.text-1xl { font-size: clamp(1rem, 2vw, 1.125rem) !important; font-weight: 600; }
-/* Precio en tarjeta de producto */
+.text-1xl { font-size: clamp(0.9375rem, 1.6vw, 1.0625rem) !important; font-weight: 600; }
+/* Precio en tarjeta */
 .product-card .text-2xl.font-bold.text-red-700,
-.product-card [class*="text-red-700"] { font-size: clamp(1.125rem, 2vw, 1.5rem) !important; font-weight: 700; }
+.product-card [class*="text-red-700"] { font-size: clamp(1rem, 1.8vw, 1.25rem) !important; font-weight: 700; }
 
 
 
-/* ===== GRID RESPONSIVE REAL PARA PRODUCTOS ===== */
+/* ===== GRID RESPONSIVE REAL PARA PRODUCTOS (centrado) ===== */
 #products-container{
   display: grid !important;
   gap: 18px !important;
   grid-template-columns: repeat(auto-fit, minmax(240px, 1fr)) !important;
   align-items: start;
+  justify-items: center;
+  margin-left: auto;
+  margin-right: auto;
 }
 
-/* Los títulos de categoría (col-span-full) deben ocupar todo el ancho */
+/* Los títulos de categoría (col-span-full): centrados y ordenados */
 #products-container .col-span-full{
   grid-column: 1 / -1 !important;
+  text-align: center;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  width: 100%;
+}
+#products-container .col-span-full h3{
+  font-size: clamp(1rem, 1.5vw, 1.125rem) !important;
+  font-weight: 700;
+  letter-spacing: var(--letter-heading);
+}
+#products-container .col-span-full > div{
+  margin-left: auto;
+  margin-right: auto;
 }
 
-/* Imagen controlada (para que no parezca banner gigante) */
+/* Imagen controlada */
 .product-image{
   width: 100%;
-  height: 170px;          /* puedes subir a 190 si quieres */
+  height: 170px;
   object-fit: cover;
 }
 
@@ -1295,7 +1330,7 @@ section h3[class*="text-1xl"],
 }
 
 .product-card h3{
-  font-size: clamp(0.9375rem, 1.4vw, 1.125rem) !important;
+  font-size: clamp(0.875rem, 1.3vw, 1.0625rem) !important;
   font-weight: 700;
   line-height: var(--line-tight);
 }
@@ -1556,20 +1591,24 @@ section h3[class*="text-1xl"],
   }
 }
 
-/* ===== ADAPTACIÓN MÓVIL 100% ===== */
+/* ===== ADAPTACIÓN MÓVIL 100% + CENTRADO + TARJETAS ANCHAS ===== */
 @media (max-width: 640px) {
-  body { font-size: clamp(0.9375rem, 2.5vw, 1rem); }
+  body { font-size: var(--text-base); }
   .container-fluid,
   .max-w-6xl,
-  .max-w-7xl { padding-left: 12px !important; padding-right: 12px !important; }
+  .max-w-7xl { padding-left: 14px !important; padding-right: 14px !important; margin-left: auto; margin-right: auto; }
   section.py-5 { padding-top: 1rem !important; padding-bottom: 1.25rem !important; }
-  section.px-5 { padding-left: 12px !important; padding-right: 12px !important; }
+  section.px-5 { padding-left: 14px !important; padding-right: 14px !important; }
   header .flex.items-center.justify-between { flex-wrap: wrap; gap: 8px; }
   header [class*="mt-2"] { margin-top: 4px; }
+  /* Tarjetas en móvil: anchas, centradas, imagen casi cuadrada */
+  #products-container { grid-template-columns: 1fr !important; gap: 16px !important; justify-items: center; max-width: 100%; }
+  .product-card { max-width: 420px; width: 100%; margin-left: auto; margin-right: auto; }
+  .product-image { aspect-ratio: 1 / 1; height: auto; min-height: 200px; object-fit: cover; }
   .product-card-actions .add-to-cart { min-height: var(--touch-min); padding: 10px 14px !important; font-size: var(--text-sm) !important; }
   .product-like-btn { width: 40px; height: 40px; min-width: 40px; min-height: 40px; }
-  #floating-cart { min-height: var(--touch-min); padding: 10px 14px !important; }
-  .modal .bg-white { margin: 10px !important; max-width: calc(100% - 20px) !important; padding: 1rem !important; }
+  #floating-cart { min-height: var(--touch-min); padding: 10px 14px !important; font-size: var(--text-sm) !important; }
+  .modal .bg-white { margin: 10px auto !important; max-width: calc(100% - 20px) !important; padding: 1rem !important; }
   .modal h3 { font-size: var(--text-lg) !important; }
   .modal p, .modal li { font-size: var(--text-sm) !important; }
   .catbar__next { width: 40px; height: 40px; min-width: 40px; min-height: 40px; font-size: 1.5rem; }
@@ -1583,14 +1622,16 @@ section h3[class*="text-1xl"],
 }
 
 @media (max-width: 480px) {
-  body { font-size: 0.9375rem; }
-  .products-grid { grid-template-columns: 1fr !important; gap: 14px !important; }
-  .product-card .p-4 { padding: 10px !important; }
-  .product-card h3 { font-size: 1rem !important; }
+  body { font-size: var(--text-base); }
+  #products-container { grid-template-columns: 1fr !important; gap: 14px !important; justify-items: center; }
+  .product-card { max-width: 100%; width: 100%; }
+  .product-image { aspect-ratio: 1 / 1; min-height: 180px; }
+  .product-card .p-4 { padding: 12px !important; }
+  .product-card h3 { font-size: 0.9375rem !important; }
   .hero-banner { height: clamp(180px, 45vw, 280px); }
-  .aviso { padding: 8px 16px; font-size: var(--text-xs); }
-  .aviso h2 { font-size: 1rem; }
-  h2.text-2xl, .text-2xl { font-size: var(--text-xl) !important; }
+  .aviso { padding: 10px 16px; font-size: var(--text-sm); text-align: center; }
+  .aviso h2 { font-size: 0.9375rem; }
+  section h2 { font-size: 1.125rem !important; }
   #products-container + * { margin-top: 0; }
 }
 
