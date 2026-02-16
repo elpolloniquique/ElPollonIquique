@@ -1,22 +1,33 @@
-/* * {
-    margin: 0;
-    padding: 0;
-    box-sizing: border-box;
-    font-family: "Montserrat";
-    font-size: 11px;
-} */
+/* ================= TIPOGRAFÍA Y ADAPTACIÓN MÓVIL ================= */
+:root {
+  --font-family: 'Segoe UI', system-ui, -apple-system, BlinkMacSystemFont, 'Helvetica Neue', Tahoma, Geneva, Verdana, sans-serif;
+  --text-xs: 0.75rem;    /* 12px */
+  --text-sm: 0.875rem;   /* 14px */
+  --text-base: 1rem;     /* 16px */
+  --text-lg: 1.125rem;   /* 18px */
+  --text-xl: 1.25rem;    /* 20px */
+  --text-2xl: 1.5rem;    /* 24px */
+  --text-3xl: 1.875rem; /* 30px */
+  --line-normal: 1.4;
+  --line-tight: 1.25;
+  --touch-min: 44px;
+}
 
-
-
-
-
+html {
+  overflow-x: hidden;
+  scroll-behavior: smooth;
+}
 
 body {
   box-sizing: border-box;
-  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+  font-family: var(--font-family);
+  font-size: var(--text-base);
+  line-height: var(--line-normal);
   margin: 0;
   padding: 0;
   padding-bottom: 100px;
+  -webkit-text-size-adjust: 100%;
+  -webkit-font-smoothing: antialiased;
 }
 /* ================= HEADER LINKS tipo menú (DELIVERY / RESERVAS / RETIROS) ================= */
 .pedido-link{
@@ -24,13 +35,14 @@ body {
   border: none;
   padding: 6px 2px;
   font-weight: 800;
-  font-size: 13px;
-  letter-spacing: .6px;
-  color: #ffffff; /* texto blanco para tu header rojo */
+  font-size: clamp(0.6875rem, 2vw, 0.8125rem);
+  letter-spacing: .06em;
+  color: #ffffff;
   cursor: pointer;
   position: relative;
   opacity: .95;
   transition: opacity .15s ease, transform .15s ease;
+  font-family: var(--font-family);
 }
 
 /* subrayado elegante al pasar */
@@ -57,9 +69,9 @@ body {
 /* En celular: un poco más compacto para que no se baje */
 @media (max-width: 640px){
   .pedido-link{
-    font-size: 12px;
-    padding: 6px 1px;
-    letter-spacing: .3px;
+    font-size: 0.75rem;
+    padding: 8px 4px;
+    letter-spacing: .04em;
   }
 }
 /* =================== EFECTOS GLOBALES =================== */
@@ -1221,12 +1233,13 @@ header .max-w-7xl{
   object-fit: cover;
 }
 
-/* textos dentro */
+/* textos dentro (coherentes con escala global) */
 .product-card h3{
-  font-size: clamp(14px, 1.5vw, 18px);
+  font-size: clamp(0.9375rem, 1.4vw, 1.125rem);
+  font-weight: 700;
 }
 .product-card p{
-  font-size: clamp(12px, 1.2vw, 14px);
+  font-size: var(--text-xs);
   line-height: 1.35;
 }
 
@@ -1237,10 +1250,23 @@ header .max-w-7xl{
 
 
 
-/* ===== TIPOGRAFÍA FLUIDA GENERAL ===== */
-h2{ font-size: clamp(18px, 2.4vw, 28px); }
-h3{ font-size: clamp(16px, 2vw, 22px); }
-p, li, button, a{ font-size: clamp(12px, 1.3vw, 14px); }
+/* ===== TIPOGRAFÍA UNIFORME (escala profesional) ===== */
+h1 { font-size: var(--text-2xl); font-weight: 700; line-height: var(--line-tight); }
+h2 { font-size: clamp(1.125rem, 2.2vw, 1.75rem); font-weight: 700; line-height: var(--line-tight); }
+h3 { font-size: clamp(1rem, 1.5vw, 1.375rem); font-weight: 700; line-height: var(--line-tight); }
+p, li { font-size: var(--text-sm); line-height: var(--line-normal); }
+button, a, .pedido-link { font-size: inherit; font-family: var(--font-family); }
+.aviso { font-size: var(--text-sm); }
+.aviso h2 { font-size: clamp(1rem, 2vw, 1.25rem); font-weight: 600; }
+/* Títulos de sección (Nuestro Menú, etc.) */
+section h2.text-2xl,
+section h2[class*="text-2xl"] { font-size: clamp(1.25rem, 3vw, 1.5rem) !important; font-weight: 700; }
+section h3.text-1xl,
+section h3[class*="text-1xl"],
+.text-1xl { font-size: clamp(1rem, 2vw, 1.125rem) !important; font-weight: 600; }
+/* Precio en tarjeta de producto */
+.product-card .text-2xl.font-bold.text-red-700,
+.product-card [class*="text-red-700"] { font-size: clamp(1.125rem, 2vw, 1.5rem) !important; font-weight: 700; }
 
 
 
@@ -1269,11 +1295,14 @@ p, li, button, a{ font-size: clamp(12px, 1.3vw, 14px); }
 }
 
 .product-card h3{
-  font-size: 16px !important;
+  font-size: clamp(0.9375rem, 1.4vw, 1.125rem) !important;
+  font-weight: 700;
+  line-height: var(--line-tight);
 }
 
 .product-card p{
-  font-size: 12px !important;
+  font-size: var(--text-xs) !important;
+  line-height: var(--line-normal);
 }
 
 /* ===== DROPDOWN MENÚ (estilo "Más") ===== */
@@ -1527,7 +1556,45 @@ p, li, button, a{ font-size: clamp(12px, 1.3vw, 14px); }
   }
 }
 
-/* ===== Viewport y touch ===== */
+/* ===== ADAPTACIÓN MÓVIL 100% ===== */
+@media (max-width: 640px) {
+  body { font-size: clamp(0.9375rem, 2.5vw, 1rem); }
+  .container-fluid,
+  .max-w-6xl,
+  .max-w-7xl { padding-left: 12px !important; padding-right: 12px !important; }
+  section.py-5 { padding-top: 1rem !important; padding-bottom: 1.25rem !important; }
+  section.px-5 { padding-left: 12px !important; padding-right: 12px !important; }
+  header .flex.items-center.justify-between { flex-wrap: wrap; gap: 8px; }
+  header [class*="mt-2"] { margin-top: 4px; }
+  .product-card-actions .add-to-cart { min-height: var(--touch-min); padding: 10px 14px !important; font-size: var(--text-sm) !important; }
+  .product-like-btn { width: 40px; height: 40px; min-width: 40px; min-height: 40px; }
+  #floating-cart { min-height: var(--touch-min); padding: 10px 14px !important; }
+  .modal .bg-white { margin: 10px !important; max-width: calc(100% - 20px) !important; padding: 1rem !important; }
+  .modal h3 { font-size: var(--text-lg) !important; }
+  .modal p, .modal li { font-size: var(--text-sm) !important; }
+  .catbar__next { width: 40px; height: 40px; min-width: 40px; min-height: 40px; font-size: 1.5rem; }
+  .footer-title { font-size: var(--text-lg); }
+  .footer-subtitle { font-size: var(--text-sm); }
+  .footer-btn { padding: 12px 16px; font-size: var(--text-sm); min-height: var(--touch-min); }
+  #view-cart-mobile, #view-cart-desktop { min-height: var(--touch-min); }
+  .menu-dd-btn { min-height: var(--touch-min); padding: 10px 14px; }
+  .sidebar-category { min-height: var(--touch-min); padding: 14px 16px !important; font-size: var(--text-sm) !important; }
+  .menu-dd-item { padding: 14px 12px !important; font-size: var(--text-sm) !important; min-height: 44px; }
+}
+
+@media (max-width: 480px) {
+  body { font-size: 0.9375rem; }
+  .products-grid { grid-template-columns: 1fr !important; gap: 14px !important; }
+  .product-card .p-4 { padding: 10px !important; }
+  .product-card h3 { font-size: 1rem !important; }
+  .hero-banner { height: clamp(180px, 45vw, 280px); }
+  .aviso { padding: 8px 16px; font-size: var(--text-xs); }
+  .aviso h2 { font-size: 1rem; }
+  h2.text-2xl, .text-2xl { font-size: var(--text-xl) !important; }
+  #products-container + * { margin-top: 0; }
+}
+
+/* Viewport y safe area (móvil) */
 @supports (padding: max(0px)) {
   body {
     padding-bottom: max(100px, env(safe-area-inset-bottom));
