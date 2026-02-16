@@ -1354,13 +1354,14 @@ p, li, button, a{ font-size: clamp(12px, 1.3vw, 14px); }
   }
 }
 
-/* ===== TABLA PEDIDOS - Scroll visible ===== */
+/* ===== TABLA PEDIDOS - Solo ~5 filas visibles + scroll ===== */
 .admin-orders-table-container {
   position: relative;
-  min-height: 200px;
+  flex-shrink: 0;
 }
 .admin-orders-scroll-wrap {
-  max-height: 420px;
+  height: 320px;
+  max-height: 320px;
   overflow-y: auto;
   overflow-x: auto;
   -webkit-overflow-scrolling: touch;
@@ -1400,8 +1401,9 @@ p, li, button, a{ font-size: clamp(12px, 1.3vw, 14px); }
     max-width: 100%;
   }
   .admin-orders-scroll-wrap {
+    height: 280px;
     max-height: 50vh;
-    min-height: 250px;
+    min-height: 200px;
   }
   #admin-orders-body {
     font-size: 11px;
