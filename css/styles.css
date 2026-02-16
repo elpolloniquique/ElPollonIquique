@@ -1601,10 +1601,21 @@ section h3[class*="text-1xl"],
   section.px-5 { padding-left: 14px !important; padding-right: 14px !important; }
   header .flex.items-center.justify-between { flex-wrap: wrap; gap: 8px; }
   header [class*="mt-2"] { margin-top: 4px; }
-  /* Tarjetas en móvil: anchas, centradas, imagen casi cuadrada */
+  /* Tarjetas en móvil: imagen justificada, bien alineada y profesional */
   #products-container { grid-template-columns: 1fr !important; gap: 16px !important; justify-items: center; max-width: 100%; }
   .product-card { max-width: 420px; width: 100%; margin-left: auto; margin-right: auto; }
-  .product-image { aspect-ratio: 1 / 1; height: auto; min-height: 200px; object-fit: cover; }
+  .product-card .product-image {
+    width: 100%;
+    max-width: 100%;
+    height: auto;
+    aspect-ratio: 3 / 2;
+    object-fit: cover;
+    object-position: center;
+    display: block;
+    margin: 0;
+    padding: 0;
+    vertical-align: middle;
+  }
   .product-card-actions .add-to-cart { min-height: var(--touch-min); padding: 10px 14px !important; font-size: var(--text-sm) !important; }
   .product-like-btn { width: 40px; height: 40px; min-width: 40px; min-height: 40px; }
   #floating-cart { min-height: var(--touch-min); padding: 10px 14px !important; font-size: var(--text-sm) !important; }
@@ -1625,7 +1636,17 @@ section h3[class*="text-1xl"],
   body { font-size: var(--text-base); }
   #products-container { grid-template-columns: 1fr !important; gap: 14px !important; justify-items: center; }
   .product-card { max-width: 100%; width: 100%; }
-  .product-image { aspect-ratio: 1 / 1; min-height: 180px; }
+  .product-card .product-image {
+    width: 100%;
+    max-width: 100%;
+    height: auto;
+    aspect-ratio: 3 / 2;
+    object-fit: cover;
+    object-position: center;
+    display: block;
+    margin: 0;
+    vertical-align: middle;
+  }
   .product-card .p-4 { padding: 12px !important; }
   .product-card h3 { font-size: 0.9375rem !important; }
   .hero-banner { height: clamp(180px, 45vw, 280px); }
