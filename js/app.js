@@ -646,19 +646,20 @@ function getTodayString() {
 }
 
 function filteredOrders() {
-  return orders.filter(o => {
+  const list = orders.filter(o => {
     const d = o.createdAt ? o.createdAt.substring(0, 10) : '';
     if (adminFilters.from && d < adminFilters.from) return false;
     if (adminFilters.to && d > adminFilters.to) return false;
     if (adminFilters.status !== 'todos' && o.status !== adminFilters.status) return false;
     if (adminFilters.search) {
       const term = adminFilters.search.toLowerCase();
-      const inName = (o.customer.name || '').toLowerCase().includes(term);
-      const inPhone = (o.customer.phone || '').toLowerCase().includes(term);
+      const inName = (o.customer?.name || '').toLowerCase().includes(term);
+      const inPhone = (o.customer?.phone || '').toLowerCase().includes(term);
       if (!inName && !inPhone) return false;
     }
     return true;
   });
+  return list.sort((a, b) => (b.createdAt || '').localeCompare(a.createdAt || ''));
 }
 
 function computeAdminStats() {
@@ -722,12 +723,13 @@ function renderAdminPanel() {
     return;
   }
   tbody.innerHTML = list.map(o => {
+    const cust = o.customer || {};
     const dateStr = o.createdAt ? new Date(o.createdAt).toLocaleString('es-CL') : '';
     return `
       <tr>
-        <td class="px-3 py-2 text-xs font-mono text-gray-700">${o.id}</td>
-        <td class="px-3 py-2 text-xs text-gray-800">${o.customer.name || '-'}</td>
-        <td class="px-3 py-2 text-xs text-gray-700">${o.customer.phone || '-'}</td>
+        <td class="px-3 py-2 text-xs font-mono text-gray-700">${o.id || '-'}</td>
+        <td class="px-3 py-2 text-xs text-gray-800">${cust.name || '-'}</td>
+        <td class="px-3 py-2 text-xs text-gray-700">${cust.phone || '-'}</td>
         <td class="px-3 py-2 text-xs font-semibold text-gray-900">${money(o.total)}</td>
         <td class="px-3 py-2 text-xs">
           <span class="${statusBadgeClass(o.status)}">${o.status}</span>
@@ -762,9 +764,17 @@ function openAdminPanelModal() {
     const toInput = document.getElementById('admin-filter-to');
     if (fromInput) fromInput.value = adminFilters.from;
     if (toInput) toInput.value = adminFilters.to;
+    updateAdminStatusFilterButtons();
     renderAdminPanel();
     modal.classList.add('active');
   }
+}
+
+function updateAdminStatusFilterButtons() {
+  document.querySelectorAll('.admin-filter-status-btn').forEach(btn => {
+    const status = btn.dataset.status || '';
+    btn.classList.toggle('active', adminFilters.status === status);
+  });
 }
 function closeAdminPanelModal() {
   const modal = document.getElementById('admin-panel-modal');
@@ -1050,6 +1060,15 @@ document.addEventListener('click', (e) => {
     closeAdminPanelModal();
   }
 
+  // ADMIN botones de filtro por estado (Pendiente, Entregado, etc.)
+  if (e.target.classList.contains('admin-filter-status-btn')) {
+    adminFilters.status = e.target.dataset.status || 'todos';
+    const fs = document.getElementById('admin-filter-status');
+    if (fs) fs.value = adminFilters.status;
+    updateAdminStatusFilterButtons();
+    renderAdminPanel();
+  }
+
   // ADMIN limpiar filtros
   if (e.target.id === 'admin-filter-clear') {
     const ff = document.getElementById('admin-filter-from');
@@ -1061,6 +1080,7 @@ document.addEventListener('click', (e) => {
     if (fs) fs.value = 'todos';
     if (fsearch) fsearch.value = '';
     adminFilters = { from: '', to: '', status: 'todos', search: '' };
+    updateAdminStatusFilterButtons();
     renderAdminPanel();
   }
 
@@ -1074,8 +1094,9 @@ document.addEventListener('click', (e) => {
     let lines = 'ID\tFecha\tNombre\tTeléfono\tDirección\tTotal\tEstado\n';
     list.forEach(o => {
       const fecha = o.createdAt ? new Date(o.createdAt).toLocaleString('es-CL') : '';
-      const dir = (o.customer.address || '').replace(/\s+/g, ' ');
-      lines += `${o.id}\t${fecha}\t${o.customer.name || ''}\t${o.customer.phone || ''}\t${dir}\t${o.total}\t${o.status}\n`;
+      const c = o.customer || {};
+      const dir = (c.address || '').replace(/\s+/g, ' ');
+      lines += `${o.id}\t${fecha}\t${c.name || ''}\t${c.phone || ''}\t${dir}\t${o.total}\t${o.status}\n`;
     });
     const copiar = async () => {
       try {
@@ -1193,6 +1214,7 @@ document.addEventListener('input', (e) => {
   }
   if (e.target.id === 'admin-filter-status') {
     adminFilters.status = e.target.value || 'todos';
+    updateAdminStatusFilterButtons();
     renderAdminPanel();
   }
   if (e.target.id === 'admin-filter-search') {

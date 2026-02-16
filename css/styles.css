@@ -1354,6 +1354,41 @@ p, li, button, a{ font-size: clamp(12px, 1.3vw, 14px); }
   }
 }
 
+/* ===== TABLA PEDIDOS - Scroll visible ===== */
+.admin-orders-table-container {
+  position: relative;
+  min-height: 200px;
+}
+.admin-orders-scroll-wrap {
+  max-height: 420px;
+  overflow-y: auto;
+  overflow-x: auto;
+  -webkit-overflow-scrolling: touch;
+  display: block;
+}
+.admin-orders-scroll-wrap::-webkit-scrollbar {
+  width: 8px;
+  height: 8px;
+}
+.admin-orders-scroll-wrap::-webkit-scrollbar-track {
+  background: #f1f1f1;
+  border-radius: 4px;
+}
+.admin-orders-scroll-wrap::-webkit-scrollbar-thumb {
+  background: #c1c1c1;
+  border-radius: 4px;
+}
+.admin-orders-scroll-wrap::-webkit-scrollbar-thumb:hover {
+  background: #a1a1a1;
+}
+.admin-orders-table {
+  min-width: 700px;
+}
+.admin-filter-status-btn.active {
+  box-shadow: 0 0 0 2px currentColor;
+  opacity: 1;
+}
+
 /* ===== RESPONSIVE 100% MÓVIL - Panel Admin ===== */
 @media (max-width: 640px) {
   #admin-panel-modal .bg-white {
@@ -1364,6 +1399,10 @@ p, li, button, a{ font-size: clamp(12px, 1.3vw, 14px); }
   #admin-panel-modal .max-w-5xl {
     max-width: 100%;
   }
+  .admin-orders-scroll-wrap {
+    max-height: 50vh;
+    min-height: 250px;
+  }
   #admin-orders-body {
     font-size: 11px;
   }
@@ -1372,11 +1411,7 @@ p, li, button, a{ font-size: clamp(12px, 1.3vw, 14px); }
     padding: 8px 4px !important;
     white-space: nowrap;
   }
-  .admin-table-wrap {
-    overflow-x: auto;
-    -webkit-overflow-scrolling: touch;
-  }
-  .admin-table-wrap table {
+  .admin-orders-table {
     min-width: 600px;
   }
   .admin-stat-card {
