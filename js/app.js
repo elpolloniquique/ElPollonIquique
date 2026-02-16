@@ -468,14 +468,14 @@ function renderProductsAll() {
     const list = products[catKey] || [];
     if (!list.length) return;
 
-    // Encabezado por categoría (como tu foto)
+    // Encabezado: nombre de categoría al canto izquierdo + línea roja hasta el final
     const header = document.createElement('div');
-    header.className = 'col-span-full mt-4 mb-2';
+    header.className = 'col-span-full mt-4 mb-2 category-header';
     header.innerHTML = `
-      <h3 class="text-1.8xl font-bold text-gray-900 flex items-center gap-2">
-        ${CATEGORY_META[catKey]?.title || catKey}
-      </h3>
-      <div class="h-[3px] w-70 bg-red-300 rounded-full mt-1"></div>
+      <div class="category-header-inner">
+        <h3 class="category-header-title">${CATEGORY_META[catKey]?.title || catKey}</h3>
+        <span class="category-line"></span>
+      </div>
     `;
     container.appendChild(header);
 
