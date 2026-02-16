@@ -9,11 +9,9 @@ const BAG_PRICE = 200; // CLP
 const WHATSAPP_NUMBER = '56986925310';
 
 // ======================= FIREBASE CONFIGURACIÓN =========================
-// IMPORTANTE:
-// 1) Entra a https://console.firebase.google.com
-// 2) Crea un proyecto Web y activa "Cloud Firestore"
-// 3) Copia la configuración de tu app web y reemplaza los valores de abajo
-// 4) En Firestore crea una colección llamada: pollon_orders_v1
+// REGLAS REQUERIDAS (Firebase Console > Realtime Database > Reglas):
+// { "rules": { "pollon_orders_v1": { ".read": true, ".write": true } } }
+// Para Firestore: crear colección pollon_orders_v1 y permitir lectura/escritura
 // -----------------------------------------------------------------------
 
 
@@ -45,16 +43,17 @@ const firebaseConfig = {
 
 
 
-let ordersRef = null; // referencia a la colección de Firestore
-let db = null;        // referencia a Firestore
-const ORDERS_PATH = 'pollon_orders_v1'; // nombre de la colección en Firestore
-let _ordersSnapshotInitialized = false; // para detectar nuevos pedidos y timbre
+let ordersRef = null;
+let db = null;
+let rtdb = null;
+const ORDERS_PATH = 'pollon_orders_v1';
+let _ordersSnapshotInitialized = false;
+let useRealtimeDB = false;
 
-// Base de datos de pedidos (en memoria, sincronizada con Firestore)
 let orders = [];
-const ORDERS_KEY = 'pollon_orders_v1'; // respaldo local
+const ORDERS_KEY = 'pollon_orders_v1';
 
-// Elimina valores undefined para compatibilidad con Firestore
+// Elimina undefined para Firestore
 function sanitizeForFirestore(obj) {
   if (obj === null || typeof obj !== 'object') return obj;
   if (Array.isArray(obj)) return obj.map(sanitizeForFirestore).filter(v => v !== undefined);
@@ -66,94 +65,151 @@ function sanitizeForFirestore(obj) {
   return out;
 }
 
-// Inicializa Firestore y suscripción en tiempo real
-function initOrdersBackend() {
-  try {
-    if (typeof firebase !== 'undefined' && !firebase.apps.length) {
-      firebase.initializeApp(firebaseConfig);
-    }
-    if (typeof firebase !== 'undefined') {
-      db = firebase.firestore();
-      ordersRef = db.collection(ORDERS_PATH);
-
-      // Suscripción en tiempo real (con manejo de errores)
-      ordersRef.orderBy('createdAt', 'asc').onSnapshot(
-        snapshot => {
-          const list = [];
-          snapshot.forEach(doc => {
-            const data = doc.data() || {};
-            list.push({ id: doc.id, ...data });
-          });
-          const prevCount = orders.length;
-          orders = list;
-          orders.sort((a, b) => (a.createdAt || '').localeCompare(b.createdAt || ''));
-          // Timbre al llegar nuevo pedido
-          if (_ordersSnapshotInitialized && list.length > prevCount && window.PollonAdmin?.isSoundEnabled?.()) {
-            window.PollonAdmin.playOrderAlarm();
-          }
-          _ordersSnapshotInitialized = true;
-          if (document.getElementById('admin-panel-modal')?.classList.contains('active')) {
-            renderAdminPanel();
-          }
-        },
-        err => {
-          console.error('Error en suscripción Firestore:', err);
-          showToast('Error de conexión con la base de datos. Verifica las reglas de Firestore.');
-        }
-      );
-    }
-  } catch (e) {
-    console.warn('No se pudo inicializar Firebase/Firestore. Se usará almacenamiento local.', e);
+function syncOrdersToList(list) {
+  const prevCount = orders.length;
+  orders = list;
+  orders.sort((a, b) => (a.createdAt || '').localeCompare(b.createdAt || ''));
+  if (_ordersSnapshotInitialized && list.length > prevCount && window.PollonAdmin?.isSoundEnabled?.()) {
+    window.PollonAdmin.playOrderAlarm();
+  }
+  _ordersSnapshotInitialized = true;
+  if (document.getElementById('admin-panel-modal')?.classList.contains('active')) {
+    renderAdminPanel();
   }
 }
 
-// Agrega UN pedido nuevo a Firestore (más fiable que batch)
-function addOrderToFirestore(order) {
-  if (!ordersRef) return Promise.reject(new Error('Firestore no inicializado'));
-  const safe = sanitizeForFirestore(order);
-  return ordersRef.doc(order.id).set(safe).then(() => true);
+// Inicializa Firebase: Realtime DB primero (más simple), luego Firestore
+function initOrdersBackend() {
+  try {
+    if (typeof firebase === 'undefined') {
+      loadOrdersFromLocal();
+      return;
+    }
+    if (!firebase.apps.length) {
+      firebase.initializeApp(firebaseConfig);
+    }
+
+    // 1) Realtime Database (databaseURL configurado = más fácil de usar)
+    if (firebase.database && firebaseConfig.databaseURL) {
+      try {
+        rtdb = firebase.database();
+        const ref = rtdb.ref(ORDERS_PATH);
+        ref.on('value', snapshot => {
+          const list = [];
+          const val = snapshot.val();
+          if (val && typeof val === 'object') {
+            Object.keys(val).forEach(key => {
+              list.push({ id: key, ...val[key] });
+            });
+          }
+          syncOrdersToList(list);
+        });
+        useRealtimeDB = true;
+        return;
+      } catch (rtErr) {
+        console.warn('Realtime DB no disponible:', rtErr);
+      }
+    }
+
+    // 2) Fallback: Firestore
+    initFirestore();
+  } catch (e) {
+    console.warn('Firebase init error:', e);
+    loadOrdersFromLocal();
+  }
 }
 
-// Actualiza UN pedido en Firestore (cambio de estado desde admin)
-function updateOrderInFirestore(order) {
-  if (!ordersRef) return Promise.reject(new Error('Firestore no inicializado'));
-  const safe = sanitizeForFirestore(order);
-  return ordersRef.doc(order.id).set(safe, { merge: true }).then(() => true);
+function initFirestore() {
+  try {
+    db = firebase.firestore();
+    ordersRef = db.collection(ORDERS_PATH);
+    ordersRef.orderBy('createdAt', 'asc').onSnapshot(
+      snapshot => {
+        const list = [];
+        snapshot.forEach(doc => {
+          list.push({ id: doc.id, ...(doc.data() || {}) });
+        });
+        syncOrdersToList(list);
+      },
+      err => {
+        console.warn('Firestore error:', err);
+        ordersRef = null;
+        db = null;
+        loadOrdersFromLocal();
+      }
+    );
+  } catch (e) {
+    console.warn('Firestore no disponible:', e);
+    loadOrdersFromLocal();
+  }
 }
 
-// Guarda pedidos (batch para múltiples cambios, usado como fallback)
+
+function loadOrdersFromLocal() {
+  try {
+    const raw = localStorage.getItem(ORDERS_KEY);
+    orders = raw ? JSON.parse(raw) : [];
+  } catch (_) {
+    orders = [];
+  }
+}
+
+// Agregar pedido (Firestore o Realtime DB)
+function addOrderToBackend(order) {
+  const safe = sanitizeForFirestore(order);
+
+  if (ordersRef && db && !useRealtimeDB) {
+    return ordersRef.doc(order.id).set(safe);
+  }
+
+  if (rtdb && useRealtimeDB) {
+    const ref = rtdb.ref(ORDERS_PATH).child(order.id);
+    return ref.set(safe);
+  }
+
+  return Promise.reject(new Error('Base de datos no disponible'));
+}
+
+// Actualizar pedido
+function updateOrderInBackend(order) {
+  const safe = sanitizeForFirestore(order);
+  if (ordersRef && db && !useRealtimeDB) {
+    return ordersRef.doc(order.id).set(safe, { merge: true });
+  }
+  if (rtdb && useRealtimeDB) {
+    return rtdb.ref(ORDERS_PATH).child(order.id).set(safe);
+  }
+  return Promise.reject(new Error('Base de datos no disponible'));
+}
+
 function saveOrders() {
-  if (ordersRef && db) {
+  if (ordersRef && db && !useRealtimeDB) {
     const batch = db.batch();
     orders.forEach(o => {
       if (!o.id) o.id = 'P' + Date.now();
       batch.set(ordersRef.doc(o.id), sanitizeForFirestore(o), { merge: true });
     });
     batch.commit().catch(err => {
-      console.error('Error guardando pedidos en Firestore', err);
+      console.error('Error guardando:', err);
       showToast('Error al guardar. Intenta de nuevo.');
+    });
+  } else if (rtdb && useRealtimeDB) {
+    orders.forEach(o => {
+      if (!o.id) o.id = 'P' + Date.now();
+      rtdb.ref(ORDERS_PATH).child(o.id).set(sanitizeForFirestore(o));
     });
   } else {
     try {
       localStorage.setItem(ORDERS_KEY, JSON.stringify(orders));
     } catch (e) {
-      console.error('Error guardando en localStorage', e);
+      console.error('Error localStorage:', e);
     }
   }
 }
 
-// Cargar pedidos (si no hay Firestore, usamos respaldo local)
 function loadOrders() {
-  if (ordersRef && db) {
-    return;
-  } else {
-    try {
-      const raw = localStorage.getItem(ORDERS_KEY);
-      orders = raw ? JSON.parse(raw) : [];
-    } catch (e) {
-      orders = [];
-    }
-  }
+  if ((ordersRef && db) || (rtdb && useRealtimeDB)) return;
+  loadOrdersFromLocal();
 }
 
 
@@ -1069,8 +1125,8 @@ document.addEventListener('click', (e) => {
       if (nuevo === 'Entregado' && !order.deliveredAt) {
         order.deliveredAt = new Date().toISOString();
       }
-      if (ordersRef && db) {
-        updateOrderInFirestore(order).then(() => {
+      if ((ordersRef && db) || (rtdb && useRealtimeDB)) {
+        updateOrderInBackend(order).then(() => {
           renderAdminPanel();
           showToast(`Estado actualizado a: ${nuevo}`);
         }).catch(err => {
@@ -1183,10 +1239,10 @@ if (checkoutForm) {
       deliveredAt: null
     };
 
-    if (ordersRef && db) {
-      addOrderToFirestore(order)
+    if ((ordersRef && db) || (rtdb && useRealtimeDB)) {
+      addOrderToBackend(order)
         .then(() => {
-          // onSnapshot actualizará orders automáticamente; no hacer push para evitar duplicados
+          orders.push(order);
           const rawMsg = buildWhatsappTextFromOrder(order);
           window.open(`https://wa.me/${WHATSAPP_NUMBER}?text=${encodeURIComponent(rawMsg)}`, '_blank', 'noopener,noreferrer');
           cart = [];
@@ -1199,7 +1255,7 @@ if (checkoutForm) {
           }
         })
         .catch(err => {
-          console.error('Error guardando en Firestore:', err);
+          console.error('Error guardando en base de datos:', err);
           orders.push(order);
           try { localStorage.setItem(ORDERS_KEY, JSON.stringify(orders)); } catch (_) {}
           const rawMsg = buildWhatsappTextFromOrder(order);
@@ -1208,7 +1264,10 @@ if (checkoutForm) {
           updateCartUI();
           document.getElementById('checkout-modal')?.classList.remove('active');
           e.target.reset();
-          showToast('⚠️ Pedido enviado a WhatsApp. Hubo un error al guardar en la base de datos.');
+          if (document.getElementById('admin-panel-modal')?.classList.contains('active')) {
+            renderAdminPanel();
+          }
+          showToast('⚠️ Pedido enviado a WhatsApp. Guardado localmente (revisa reglas de Firebase).');
         });
     } else {
       orders.push(order);
