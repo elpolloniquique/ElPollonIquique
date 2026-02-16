@@ -16,29 +16,29 @@ const WHATSAPP_NUMBER = '56986925310';
 
 
 
-const firebaseConfig = {
-  apiKey: "AIzaSyDc4omnC9sxGUKEYjUVrJUxcG9RMiidkr4",
-  authDomain: "pollonpagina01.firebaseapp.com",
-  databaseURL: "https://pollonpagina01-default-rtdb.firebaseio.com",
-  projectId: "pollonpagina01",
-  storageBucket: "pollonpagina01.firebasestorage.app",
-  messagingSenderId: "211369350355",
-  appId: "1:211369350355:web:11d849533761780a5df026",
-  measurementId: "G-NE5XP5N3VS"
-};
-
-
-
-
-// const firebaseConfig = { COPIA
-//   apiKey: "AIzaSyAWv3zPEUU82YcLSwOxsv-MQZP2ZjcycOg",
-//   authDomain: "elpollon01-307da.firebaseapp.com",
-//   databaseURL: "https://elpollon01-307da-default-rtdb.firebaseio.com",
-//   projectId: "elpollon01-307da",
-//   storageBucket: "elpollon01-307da.firebasestorage.app",
-//   messagingSenderId: "1024156951564",
-//   appId: "1:1024156951564:web:946a9b6003d8dff1053a29"
+// const firebaseConfig = {
+//   apiKey: "AIzaSyDc4omnC9sxGUKEYjUVrJUxcG9RMiidkr4",
+//   authDomain: "pollonpagina01.firebaseapp.com",
+//   databaseURL: "https://pollonpagina01-default-rtdb.firebaseio.com",
+//   projectId: "pollonpagina01",
+//   storageBucket: "pollonpagina01.firebasestorage.app",
+//   messagingSenderId: "211369350355",
+//   appId: "1:211369350355:web:11d849533761780a5df026",
+//   measurementId: "G-NE5XP5N3VS"
 // };
+
+
+
+
+  const firebaseConfig = { 
+   apiKey: "AIzaSyAWv3zPEUU82YcLSwOxsv-MQZP2ZjcycOg",
+   authDomain: "elpollon01-307da.firebaseapp.com",
+   databaseURL: "https://elpollon01-307da-default-rtdb.firebaseio.com",
+   projectId: "elpollon01-307da",
+   storageBucket: "elpollon01-307da.firebasestorage.app",
+   messagingSenderId: "1024156951564",
+   appId: "1:1024156951564:web:946a9b6003d8dff1053a29"
+ };
 
 
 
