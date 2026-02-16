@@ -1171,9 +1171,12 @@ img{
   padding-inline: clamp(10px, 2.4vw, 20px);
 }
 
-/* ===== HEADER (se desplaza con la página al hacer scroll) ===== */
+/* ===== HEADER FIJO: siempre visible arriba al hacer scroll ===== */
 .header-fijo {
-  position: relative;
+  position: sticky;
+  top: 0;
+  left: 0;
+  right: 0;
   z-index: 50;
   width: 100%;
   flex-shrink: 0;
