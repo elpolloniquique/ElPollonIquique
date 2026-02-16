@@ -1171,25 +1171,55 @@ img{
   padding-inline: clamp(10px, 2.4vw, 20px);
 }
 
-/* ===== HEADER RESPONSIVE ===== */
-header .max-w-7xl{
+/* ===== HEADER FIJO, ADAPTABLE, UNA SOLA LÍNEA ===== */
+.header-fijo {
+  position: sticky;
+  top: 0;
+  z-index: 50;
+  width: 100%;
+}
+
+header .max-w-7xl {
   padding-left: clamp(8px, 2vw, 16px) !important;
   padding-right: clamp(8px, 2vw, 16px) !important;
 }
 
-@media (max-width: 640px){
-  /* reduce tamaño de logo */
-  .logo{ width: 44px; height: 44px; }
+/* Una sola recta: no wrap, centro que puede encogerse, hamburguesa siempre visible */
+.header-inner {
+  flex-wrap: nowrap !important;
+  min-width: 0;
+}
+.header-logo { flex-shrink: 0; }
+.header-centro {
+  flex: 1 1 auto;
+  min-width: 0;
+  max-width: 100%;
+}
+.header-pregunta {
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  max-width: 100%;
+}
+/* Menú hamburguesa siempre visible en todas las pantallas */
+.header-hamburger {
+  display: flex !important;
+  flex-shrink: 0;
+}
 
-  /* botones header (DELIVERY/RESERVAS/RETIROS) más compactos */
-  .pedido-link{
-    font-size: 11px;
-    letter-spacing: .2px;
-    padding: 6px 0;
+@media (max-width: 640px) {
+  .logo { width: 40px; height: 40px; }
+  .header-pregunta { font-size: 9px !important; }
+  .pedido-link {
+    font-size: 9px;
+    letter-spacing: 0.02em;
+    padding: 4px 2px;
   }
+  header h1 { font-size: 1rem !important; }
+}
 
-  /* evita que el texto haga salto raro */
-  header h1{ font-size: 18px !important; }
+@media (min-width: 641px) and (max-width: 1023px) {
+  .header-centro { flex: 1 1 auto; }
 }
 
 /* ===== SIDEBAR RESPONSIVE ===== */
@@ -1579,16 +1609,10 @@ section h3[class*="text-1xl"],
 
 /* ===== RESPONSIVE - Header compacto en móvil ===== */
 @media (max-width: 480px) {
-  header .flex.items-center.justify-between {
-    flex-wrap: wrap;
-  }
-  .logo {
-    width: 40px;
-    height: 40px;
-  }
-  .hero-banner {
-    height: clamp(180px, 40vw, 400px);
-  }
+  .logo { width: 38px; height: 38px; }
+  .header-pregunta { font-size: 8px !important; }
+  .pedido-link { font-size: 8px; padding: 2px 1px; }
+  .hero-banner { height: clamp(180px, 40vw, 400px); }
 }
 
 /* ===== ADAPTACIÓN MÓVIL 100% + CENTRADO + TARJETAS ANCHAS ===== */
@@ -1599,11 +1623,25 @@ section h3[class*="text-1xl"],
   .max-w-7xl { padding-left: 14px !important; padding-right: 14px !important; margin-left: auto; margin-right: auto; }
   section.py-5 { padding-top: 1rem !important; padding-bottom: 1.25rem !important; }
   section.px-5 { padding-left: 14px !important; padding-right: 14px !important; }
-  header .flex.items-center.justify-between { flex-wrap: wrap; gap: 8px; }
-  header [class*="mt-2"] { margin-top: 4px; }
-  /* Tarjetas en móvil: imagen justificada, bien alineada y profesional */
-  #products-container { grid-template-columns: 1fr !important; gap: 16px !important; justify-items: center; max-width: 100%; }
-  .product-card { max-width: 420px; width: 100%; margin-left: auto; margin-right: auto; }
+  /* Header: una sola línea (header-inner tiene flex-nowrap) */
+  /* Tarjetas en móvil: 2 por fila */
+  #products-container {
+    grid-template-columns: repeat(2, minmax(0, 1fr)) !important;
+    gap: 10px !important;
+    align-items: stretch;
+    justify-items: stretch;
+    max-width: 100%;
+  }
+  #products-container .col-span-full { grid-column: 1 / -1 !important; }
+  .product-card {
+    width: 100%;
+    min-width: 0;
+    max-width: none;
+    margin: 0;
+  }
+  .product-card .p-4 { padding: 10px !important; }
+  .product-card h3 { font-size: 0.8125rem !important; line-height: 1.25; }
+  .product-card p { font-size: 0.6875rem !important; }
   .product-card .product-image {
     width: 100%;
     max-width: 100%;
@@ -1614,7 +1652,6 @@ section h3[class*="text-1xl"],
     display: block;
     margin: 0;
     padding: 0;
-    vertical-align: middle;
   }
   .product-card-actions .add-to-cart { min-height: var(--touch-min); padding: 10px 14px !important; font-size: var(--text-sm) !important; }
   .product-like-btn { width: 40px; height: 40px; min-width: 40px; min-height: 40px; }
@@ -1645,9 +1682,8 @@ section h3[class*="text-1xl"],
     object-position: center;
     display: block;
     margin: 0;
-    vertical-align: middle;
   }
-  .product-card .p-4 { padding: 12px !important; }
+  .product-card .p-4 { padding: 8px !important; }
   .product-card h3 { font-size: 0.9375rem !important; }
   .hero-banner { height: clamp(180px, 45vw, 280px); }
   .aviso { padding: 10px 16px; font-size: var(--text-sm); text-align: center; }
