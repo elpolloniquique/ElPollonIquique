@@ -28,6 +28,7 @@ const firebaseConfig = {
 let ordersRef = null; // referencia a la colección de Firestore
 let db = null;        // referencia a Firestore
 const ORDERS_PATH = 'pollon_orders_v1'; // nombre de la colección en Firestore
+let _ordersSnapshotInitialized = false; // para detectar nuevos pedidos y timbre
 
 // Base de datos de pedidos (en memoria, sincronizada con Firestore)
 let orders = [];
@@ -53,9 +54,14 @@ function initOrdersBackend() {
             ...data
           });
         });
+        const prevCount = orders.length;
         orders = list;
-        // Aseguramos orden por fecha por si acaso
         orders.sort((a, b) => (a.createdAt || '').localeCompare(b.createdAt || ''));
+        // Timbre: solo cuando llega un NUEVO pedido (no en carga inicial)
+        if (_ordersSnapshotInitialized && list.length > prevCount && window.PollonAdmin?.isSoundEnabled?.()) {
+          window.PollonAdmin.playOrderAlarm();
+        }
+        _ordersSnapshotInitialized = true;
         const adminVisible = document.getElementById('admin-panel-modal')?.classList.contains('active');
         if (adminVisible) {
           renderAdminPanel();
@@ -332,6 +338,12 @@ function renderProductsSingle(category) {
   });
 
   setActiveCategoryButton(category);
+}
+
+function setActiveCategoryButton(category) {
+  document.querySelectorAll('.category-btn.catbtn').forEach(btn => {
+    btn.classList.toggle('is-active', (btn.dataset.category || '') === category);
+  });
 }
 
 // Render “TODO EL MENÚ”: todas las categorías con encabezados

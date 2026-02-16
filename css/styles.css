@@ -108,7 +108,7 @@ body {
   box-shadow: 0 10px 10px rgba(0,0,0,.3);
   animation: float 1s ease-in-out infinite;
 }
-@media (max-width: 768px) {}
+@media (max-width: 768px) {
   .floating-cart {
     bottom: 50px;
     right: 20px;
@@ -133,6 +133,7 @@ body {
   #floating-cart-total {
     font-size: 1rem;
     color: black;
+  }
 }
 @keyframes float {
   0%, 100% { transform: translateY(0); }
@@ -198,6 +199,18 @@ body {
 }
 
 
+
+/* Botón Activar/Desactivar sonido en panel admin */
+.admin-sound-btn {
+  transition: background-color 0.2s, transform 0.15s;
+}
+.admin-sound-btn:hover {
+  transform: translateY(-1px);
+}
+.admin-sound-btn.admin-sound-on {
+  background: #34d399 !important;
+  color: #065f46 !important;
+}
 
 /* Botón Admin (estático) */
 #admin-open-btn {
@@ -715,7 +728,7 @@ body {
 
   color:#ff0000;
   background: linear-gradient(135deg,#fceaea 0%, #f7eeee 100%);
-  box-shadow: 0 16px 30px rgbagb(255, 255, 255, 0.2);
+  box-shadow: 0 16px 30px rgba(255, 255, 255, 0.2);
 }
 
 /* En PC no necesitamos flecha */
@@ -1338,5 +1351,75 @@ p, li, button, a{ font-size: clamp(12px, 1.3vw, 14px); }
   .menu-dd-panel{
     width: min(88vw, 320px);
     right: 0;
+  }
+}
+
+/* ===== RESPONSIVE 100% MÓVIL - Panel Admin ===== */
+@media (max-width: 640px) {
+  #admin-panel-modal .bg-white {
+    margin: 8px;
+    max-height: 95vh;
+    overflow-y: auto;
+  }
+  #admin-panel-modal .max-w-5xl {
+    max-width: 100%;
+  }
+  #admin-orders-body {
+    font-size: 11px;
+  }
+  #admin-orders-body td,
+  #admin-orders-body th {
+    padding: 8px 4px !important;
+    white-space: nowrap;
+  }
+  .admin-table-wrap {
+    overflow-x: auto;
+    -webkit-overflow-scrolling: touch;
+  }
+  .admin-table-wrap table {
+    min-width: 600px;
+  }
+  .admin-stat-card {
+    padding: 8px 10px;
+  }
+  .admin-stat-value {
+    font-size: 14px;
+  }
+  .admin-sound-btn, #admin-copy, #admin-refresh, #admin-filter-clear {
+    font-size: 10px !important;
+    padding: 6px 10px !important;
+  }
+}
+
+/* ===== RESPONSIVE - Modales en móvil ===== */
+@media (max-width: 480px) {
+  .modal .bg-white.rounded-lg {
+    margin: 12px 8px;
+    max-width: calc(100vw - 16px);
+  }
+  #cart-modal .max-w-2xl,
+  #checkout-modal .max-w-md {
+    max-width: 100%;
+  }
+}
+
+/* ===== RESPONSIVE - Header compacto en móvil ===== */
+@media (max-width: 480px) {
+  header .flex.items-center.justify-between {
+    flex-wrap: wrap;
+  }
+  .logo {
+    width: 40px;
+    height: 40px;
+  }
+  .hero-banner {
+    height: clamp(180px, 40vw, 400px);
+  }
+}
+
+/* ===== Viewport y touch ===== */
+@supports (padding: max(0px)) {
+  body {
+    padding-bottom: max(100px, env(safe-area-inset-bottom));
   }
 }

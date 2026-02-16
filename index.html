@@ -2,7 +2,7 @@
 <html lang="es">
 <head>
   <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
 
   <title>Pollería El Pollón - Iquique - Delivery rápido y seguro</title>
 
@@ -684,6 +684,10 @@
             <span id="admin-filter-count" class="font-semibold">0</span>
           </div>
           <div class="flex flex-wrap gap-2">
+            <button id="admin-sound-toggle"
+                    class="admin-sound-btn px-3 py-1 rounded-md bg-amber-100 text-amber-900 hover:bg-amber-200 font-semibold text-[11px] md:text-xs transition-colors">
+              🔕 Activar sonido
+            </button>
             <button id="admin-copy"
                     class="px-3 py-1 rounded-md bg-emerald-100 text-emerald-800 hover:bg-emerald-200 font-semibold text-[11px] md:text-xs">
               📋 Copiar pedidos (Excel)
@@ -701,7 +705,7 @@
       </div>
 
       <!-- Tabla pedidos -->
-      <div class="border border-gray-200 rounded-lg overflow-hidden max-h-80 overflow-y-auto text-sm">
+      <div class="border border-gray-200 rounded-lg overflow-hidden max-h-80 overflow-auto text-sm admin-table-wrap">
         <table class="min-w-full divide-y divide-gray-200">
           <thead class="bg-gray-50">
             <tr>
@@ -1060,9 +1064,9 @@
 
 
 
+  <!-- JS admin (debe cargar antes de app para el timbre de nuevos pedidos) -->
+  <script src="js/admin.js"></script>
   <!-- JS principal -->
   <script src="js/app.js"></script>
-  <!-- JS extra admin (por ahora vacío / opcional) -->
-  <script src="js/admin.js"></script>
 </body>
 </html>
