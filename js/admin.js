@@ -26,6 +26,9 @@
     }
   }
 
+  /** Ruta del audio de timbre (relativa a index.html). Coloque alarma.mp3 en la carpeta sounds. */
+  const ALARM_AUDIO_SRC = 'sounds/alarma.mp3';
+
   let _audioContext = null;
 
   function getAudioContext() {
@@ -37,15 +40,39 @@
   }
 
   /**
-   * Reproduce timbre/alarma por 1 segundo usando Web Audio API.
-   * No requiere archivos externos.
+   * Reproduce el timbre con el archivo sounds/alarma.mp3.
+   * Si el archivo no está disponible o falla la reproducción, usa un beep de respaldo.
    */
   function playOrderAlarm() {
+    try {
+      const audio = new Audio(ALARM_AUDIO_SRC);
+      audio.volume = 1;
+      audio.onerror = function () {
+        playOrderAlarmFallback();
+      };
+
+      var played = audio.play();
+      if (played && typeof played.catch === 'function') {
+        played.catch(function () {
+          playOrderAlarmFallback();
+        });
+      }
+    } catch (e) {
+      playOrderAlarmFallback();
+    }
+  }
+
+  /**
+   * Fallback: timbre por 1 segundo con Web Audio API si el MP3 falla o no está.
+   */
+  function playOrderAlarmFallback() {
     try {
       const audioContext = getAudioContext();
       if (!audioContext) return;
       if (audioContext.state === 'suspended') {
-        audioContext.resume().then(() => playOrderAlarm()).catch(() => {});
+        audioContext.resume().then(function () {
+          playOrderAlarmFallback();
+        }).catch(function () {});
         return;
       }
       const oscillator = audioContext.createOscillator();
