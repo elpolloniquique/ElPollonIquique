@@ -38,10 +38,10 @@ body {
 .pedido-link{
   background: transparent;
   border: none;
-  padding: 6px 2px;
+  padding: 6px 6px;
   font-weight: 800;
-  font-size: clamp(0.6875rem, 2vw, 0.8125rem);
-  letter-spacing: .06em;
+  font-size: clamp(0.75rem, 2.2vw, 0.875rem);
+  letter-spacing: .05em;
   color: #ffffff;
   cursor: pointer;
   position: relative;
@@ -1171,12 +1171,12 @@ img{
   padding-inline: clamp(10px, 2.4vw, 20px);
 }
 
-/* ===== HEADER FIJO, ADAPTABLE, UNA SOLA LÍNEA ===== */
+/* ===== HEADER (se desplaza con la página al hacer scroll) ===== */
 .header-fijo {
-  position: sticky;
-  top: 0;
+  position: relative;
   z-index: 50;
   width: 100%;
+  flex-shrink: 0;
 }
 
 header .max-w-7xl {
@@ -1190,10 +1190,16 @@ header .max-w-7xl {
   min-width: 0;
 }
 .header-logo { flex-shrink: 0; }
+/* Centro del header: aprovecha el espacio entre logo y menú */
 .header-centro {
   flex: 1 1 auto;
   min-width: 0;
   max-width: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 0 4px;
 }
 .header-pregunta {
   white-space: nowrap;
@@ -1209,11 +1215,11 @@ header .max-w-7xl {
 
 @media (max-width: 640px) {
   .logo { width: 40px; height: 40px; }
-  .header-pregunta { font-size: 9px !important; }
+  .header-pregunta { font-size: clamp(0.625rem, 2vw, 0.75rem) !important; }
   .pedido-link {
-    font-size: 9px;
-    letter-spacing: 0.02em;
-    padding: 4px 2px;
+    font-size: clamp(0.6875rem, 2.2vw, 0.8125rem);
+    letter-spacing: 0.03em;
+    padding: 4px 4px;
   }
   header h1 { font-size: 1rem !important; }
 }
@@ -1610,8 +1616,8 @@ section h3[class*="text-1xl"],
 /* ===== RESPONSIVE - Header compacto en móvil ===== */
 @media (max-width: 480px) {
   .logo { width: 38px; height: 38px; }
-  .header-pregunta { font-size: 8px !important; }
-  .pedido-link { font-size: 8px; padding: 2px 1px; }
+  .header-pregunta { font-size: clamp(0.5625rem, 1.8vw, 0.6875rem) !important; }
+  .pedido-link { font-size: clamp(0.625rem, 2vw, 0.75rem); padding: 3px 3px; }
   .hero-banner { height: clamp(180px, 40vw, 400px); }
 }
 
