@@ -1410,18 +1410,79 @@ if (viewCartDesktop) {
   });
 }
 
-// Carrusel auto
-let currentSlide = 0;
+// Carrusel infinito: 1 segundo por slide, bucle sin salto visible (clon de la 1ª imagen al final)
 const totalSlides = 10;
+const totalSlidesInDom = totalSlides + 1; // 11: 10 originales + clon de la primera
+let currentSlide = 0;
+let isResetting = false;
 const carouselContainer = document.getElementById('carousel-container');
-function updateCarousel() {
-  if (carouselContainer) carouselContainer.style.transform = `translateX(-${currentSlide * 100}%)`;
+const carouselIndicators = document.getElementById('carousel-indicators');
+const CAROUSEL_INTERVAL_MS = 1000;
+
+function updateCarousel(useTransition = true) {
+  if (!carouselContainer) return;
+  if (!useTransition) {
+    carouselContainer.style.transition = 'none';
+  }
+  carouselContainer.style.transform = `translateX(-${currentSlide * 100}%)`;
+  if (!useTransition) {
+    carouselContainer.offsetHeight; // reflow
+    carouselContainer.style.transition = '';
+  }
+  const activeIndex = currentSlide === totalSlides ? 0 : currentSlide;
+  if (carouselIndicators) {
+    const dots = carouselIndicators.querySelectorAll('.carousel-dot');
+    dots.forEach((dot, i) => {
+      const isActive = i === activeIndex;
+      dot.classList.toggle('active', isActive);
+      dot.setAttribute('aria-selected', isActive);
+    });
+  }
 }
-setInterval(() => {
-  currentSlide = (currentSlide + 1) % totalSlides;
-  updateCarousel();
-}, 2000);
-updateCarousel();
+
+function goNext() {
+  if (isResetting) return;
+  currentSlide++;
+  if (currentSlide === totalSlides) {
+    updateCarousel(true);
+    isResetting = true;
+    return;
+  }
+  if (currentSlide >= totalSlidesInDom) {
+    currentSlide = 0;
+    updateCarousel(false);
+    return;
+  }
+  updateCarousel(true);
+}
+
+function onCarouselTransitionEnd() {
+  if (!isResetting || currentSlide !== totalSlides) return;
+  isResetting = false;
+  currentSlide = 0;
+  updateCarousel(false);
+}
+
+if (carouselContainer) {
+  carouselContainer.addEventListener('transitionend', onCarouselTransitionEnd);
+}
+
+let carouselInterval = setInterval(goNext, CAROUSEL_INTERVAL_MS);
+
+if (carouselIndicators) {
+  carouselIndicators.querySelectorAll('.carousel-dot').forEach((dot) => {
+    dot.addEventListener('click', () => {
+      const index = parseInt(dot.getAttribute('data-index'), 10);
+      if (Number.isNaN(index) || index < 0 || index >= totalSlides) return;
+      currentSlide = index;
+      updateCarousel(true);
+      clearInterval(carouselInterval);
+      carouselInterval = setInterval(goNext, CAROUSEL_INTERVAL_MS);
+    });
+  });
+}
+
+updateCarousel(true);
 
 // --------- CHATBOT LÓGICA ----------
 const chatbotMessagesEl = document.getElementById('chatbot-messages');
