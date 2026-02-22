@@ -27,9 +27,8 @@
 </head>
 <body class="bg-white">
 
-  <!-- Header fijo, adaptable; menú hamburguesa siempre visible -->
-  <header class="header-fijo text-white py-2 sm:py-3 px-0 sm:px-4 shadow-lg"
-          style="background:linear-gradient(135deg,#b40000 0%,#c50000 100%);">
+  <!-- Header fijo: fondo blanco, texto oscuro, menú hamburguesa siempre visible -->
+  <header class="header-fijo header-blanco py-2 sm:py-3 px-0 sm:px-4 shadow-md">
     <div class="max-w-7xl 2xl:max-w-[1900px] mx-auto px-2 lg:px-3">
       <div class="header-inner flex items-center justify-between flex-nowrap gap-1 sm:gap-2">
         <div class="header-logo flex items-center gap-2 flex-shrink-0">
@@ -38,14 +37,14 @@
                  onerror="this.src=''; this.alt='Logo no disponible'; this.style.display='none';">
           </div>
           <div class="hidden md:block">
-            <h1 class="text-2xl font-bold">Pollería El Pollón</h1>
-            <p class="text-sm opacity-90">📍 Iquique</p>
+            <h1 class="header-titulo text-2xl font-bold">Pollería El Pollón</h1>
+            <p class="header-sub text-sm">📍 Iquique</p>
           </div>
        </div>
           
         <!-- Centro: tipo de pedido -->
         <div class="header-centro flex-shrink min-w-0 mt-0 md:mt-0">
-          <p class="header-pregunta text-center text-[10px] sm:text-xs font-semibold mb-0 opacity-90">
+          <p class="header-pregunta text-center text-[10px] sm:text-xs font-semibold mb-0">
             ¿Cómo desea hacer su pedido?
           </p>
           <nav class="flex items-center justify-center gap-2 sm:gap-4 whitespace-nowrap">
@@ -66,11 +65,11 @@
 
 
         <div class="hidden lg:flex items-center gap-3 flex-shrink-0">
-          <div class="flex items-center gap-2 bg-white/20 px-4 py-2 rounded-lg">
+          <div class="header-llamanos flex items-center gap-2 px-4 py-2 rounded-lg border border-gray-200 bg-gray-50">
             <span>📞</span>
             <div>
-              <p class="text-xs opacity-75">Llámanos</p>
-              <p class="font-bold text-sm">+56 9 8692 5310</p>
+              <p class="text-xs text-gray-600">Llámanos</p>
+              <p class="font-bold text-sm text-gray-900">+56 9 8692 5310</p>
             </div>
           </div>
           <button id="view-cart-desktop"
@@ -83,10 +82,10 @@
 
         <!-- Menú hamburguesa: siempre visible en todas las pantallas -->
         <div class="header-hamburger menu-dd-wrap relative flex-shrink-0">
-          <button id="menu-dd-btn-mobile" type="button" class="menu-dd-btn" aria-expanded="false">
-    <span class="menu-dd-top">MENÚ</span>
-    <span class="menu-dd-bottom">☰ <span class="menu-dd-caret">▾</span></span>
-  </button>
+          <button id="menu-dd-btn-mobile" type="button" class="menu-dd-btn header-menu-btn" aria-expanded="false">
+            <span class="menu-dd-top">MENÚ</span>
+            <span class="menu-dd-bottom">☰ <span class="menu-dd-caret">▾</span></span>
+          </button>
 
   <div id="menu-dd-panel-mobile" class="menu-dd-panel hidden" role="menu">
 
