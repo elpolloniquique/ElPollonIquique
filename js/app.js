@@ -1484,13 +1484,27 @@ if (carouselIndicators) {
 
 updateCarousel(true);
 
-// --------- CATEGORÍAS: scrollbar, flechas y arrastre con mouse ----------
+// --------- CATEGORÍAS: scrollbar solo cuando hay overflow, flechas y arrastre con mouse ----------
 (function initCategoriesScrollbar() {
   const wrap = document.getElementById('categories-scroll-wrap');
+  const scrollbarEl = wrap && wrap.nextElementSibling ? wrap.nextElementSibling : null;
   const thumb = document.getElementById('categories-scrollbar-thumb');
-  const track = wrap && wrap.nextElementSibling && wrap.nextElementSibling.querySelector('.categories-scrollbar__track');
+  const track = scrollbarEl && scrollbarEl.querySelector('.categories-scrollbar__track');
   const prevBtn = document.getElementById('categories-scroll-prev');
   const nextBtn = document.getElementById('categories-scroll-next');
+
+  function needsScroll() {
+    return wrap && wrap.scrollWidth > wrap.clientWidth;
+  }
+
+  function toggleScrollbarVisibility() {
+    if (!scrollbarEl) return;
+    if (needsScroll()) {
+      scrollbarEl.classList.remove('categories-scrollbar--hidden');
+    } else {
+      scrollbarEl.classList.add('categories-scrollbar--hidden');
+    }
+  }
 
   function updateThumb() {
     if (!wrap || !thumb || !track) return;
@@ -1514,7 +1528,13 @@ updateCarousel(true);
 
   if (wrap && thumb) {
     wrap.addEventListener('scroll', updateThumb);
-    window.addEventListener('resize', updateThumb);
+    function onResizeOrLoad() {
+      toggleScrollbarVisibility();
+      updateThumb();
+    }
+    window.addEventListener('resize', onResizeOrLoad);
+    window.addEventListener('load', onResizeOrLoad);
+    toggleScrollbarVisibility();
     updateThumb();
   }
 

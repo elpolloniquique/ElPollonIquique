@@ -956,13 +956,17 @@ body {
   text-underline-offset: 3px;
 }
 
-/* Scrollbar del indicador: más delgado, plomo y blanco */
+/* Scrollbar del indicador: más delgado, plomo y blanco; se oculta cuando no hay overflow */
 .categories-scrollbar {
   display: flex;
   align-items: center;
   gap: 6px;
   padding: 8px 6px 12px;
   margin-top: -2px;
+  transition: opacity 0.2s ease, padding 0.2s ease, margin 0.2s ease;
+}
+.categories-scrollbar--hidden {
+  display: none !important;
 }
 
 .categories-scrollbar__track {
