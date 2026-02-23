@@ -1484,6 +1484,89 @@ if (carouselIndicators) {
 
 updateCarousel(true);
 
+// --------- CATEGORÍAS: scrollbar, flechas y arrastre con mouse ----------
+(function initCategoriesScrollbar() {
+  const wrap = document.getElementById('categories-scroll-wrap');
+  const thumb = document.getElementById('categories-scrollbar-thumb');
+  const track = wrap && wrap.nextElementSibling && wrap.nextElementSibling.querySelector('.categories-scrollbar__track');
+  const prevBtn = document.getElementById('categories-scroll-prev');
+  const nextBtn = document.getElementById('categories-scroll-next');
+
+  function updateThumb() {
+    if (!wrap || !thumb || !track) return;
+    const scrollWidth = wrap.scrollWidth;
+    const clientWidth = wrap.clientWidth;
+    const scrollLeft = wrap.scrollLeft;
+    const trackRect = track.getBoundingClientRect();
+    const trackWidth = trackRect.width;
+    if (scrollWidth <= clientWidth) {
+      thumb.style.width = '100%';
+      thumb.style.left = '0';
+      return;
+    }
+    const ratio = clientWidth / scrollWidth;
+    const thumbWidthPx = Math.max(32, trackWidth * ratio);
+    const maxScroll = scrollWidth - clientWidth;
+    const thumbLeft = maxScroll <= 0 ? 0 : (scrollLeft / maxScroll) * (trackWidth - thumbWidthPx);
+    thumb.style.width = thumbWidthPx + 'px';
+    thumb.style.left = thumbLeft + 'px';
+  }
+
+  if (wrap && thumb) {
+    wrap.addEventListener('scroll', updateThumb);
+    window.addEventListener('resize', updateThumb);
+    updateThumb();
+  }
+
+  const scrollStep = 180;
+  if (prevBtn && wrap) {
+    prevBtn.addEventListener('click', () => {
+      wrap.scrollBy({ left: -scrollStep, behavior: 'smooth' });
+    });
+  }
+  if (nextBtn && wrap) {
+    nextBtn.addEventListener('click', () => {
+      wrap.scrollBy({ left: scrollStep, behavior: 'smooth' });
+    });
+  }
+
+  if (wrap) {
+    let dragStartX = null;
+    let dragScrollLeft = 0;
+    let isDragging = false;
+
+    wrap.addEventListener('mousedown', function (e) {
+      isDragging = false;
+      dragStartX = e.pageX;
+      dragScrollLeft = wrap.scrollLeft;
+    });
+
+    wrap.addEventListener('mousemove', function (e) {
+      if (dragStartX === null) return;
+      const dx = e.pageX - dragStartX;
+      if (!isDragging && Math.abs(dx) > 5) isDragging = true;
+      if (isDragging) {
+        wrap.scrollLeft = dragScrollLeft - dx;
+      }
+    });
+
+    function endDrag() {
+      dragStartX = null;
+    }
+
+    wrap.addEventListener('mouseup', endDrag);
+    wrap.addEventListener('mouseleave', endDrag);
+
+    wrap.addEventListener('click', function (e) {
+      if (isDragging) {
+        e.preventDefault();
+        e.stopPropagation();
+        isDragging = false;
+      }
+    }, true);
+  }
+})();
+
 // --------- CHATBOT LÓGICA ----------
 const chatbotMessagesEl = document.getElementById('chatbot-messages');
 

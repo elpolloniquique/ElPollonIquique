@@ -208,64 +208,84 @@
     <div class="max-w-6xl 2xl:max-w-[1600px] mx-auto">
       <h2 class="text-2xl font-bold text-center mb-5 text-red-800"> Nuestro Menú</h2>
 
-      <!-- Botones de categorías -->
-      <div class="mb-4 bg-[#C4362E]"></div>
-      <!-- =================== CATEGORÍAS PRO (con flecha) =================== -->
-<div class="mb-1">
-  <h3 class="text-1xl  text-gray-600 mb-2">
-    Selecciona tus Productos
-  </h3>
-
-  <div class="catbar">
-    <!-- Zona scroll -->
-    <div id="catbar-scroll" class="catbar__scroll scrollbar-hide">
-      <div class="catbar__row">
-
-        <!-- NUEVO: TODO EL MENÚ -->
-        <button class="category-btn catbtn is-active" data-category="todo-el-menu" type="button">
-          🔥 <span>Todo el Menú</span>
-        </button>
-
-        <button id="ofertas" class="category-btn catbtn" data-category="ofertas-familiares" type="button">
-          👨‍👩‍👧‍👦 <span>Familiares</span>
-
-        </button>
-
-        <button class="category-btn catbtn" data-category="ofertas-dos" type="button">
-          👫 <span>Para Dos</span>
-        </button>
-
-        <button class="category-btn catbtn" data-category="ofertas-personales" type="button">
-          🧑 <span>Personales</span>
-        </button>
-
-        <button class="category-btn catbtn" data-category="platos-extras" type="button">
-          🍽️ <span>Extras</span>
-        </button>
-
-        <button class="category-btn catbtn" data-category="agregados" type="button">
-          ➕ <span>Agregados</span>
-        </button>
-
-        <button class="category-btn catbtn" data-category="bebidas" type="button">
-         🥤 <span>Bebidas</span>
-        </button>
-
-<button class="category-btn catbtn" data-category="descartables" type="button">
-  🍴 <span>Descartables</span>
-</button>
-
-
-      </div>
-    </div>
-
-    <!-- Flecha para avanzar (como en tu imagen) -->
-    <button id="catbar-next" class="catbar__next" type="button" aria-label="Siguiente">
-      ›
-    </button>
-  </div>
-</div>
-<!-- ================================================================ -->
+      <!-- Sección Categorías: tarjetas cuadradas, imagen cuadrada más pequeña, nombre como texto con subrayado al activo -->
+      <section class="categories-section" aria-label="Categorías del menú">
+        <div id="categories-scroll-wrap" class="categories-scroll-wrap">
+          <div id="categories-carousel" class="categories-carousel" role="list">
+            <article class="category-card" role="listitem">
+              <button type="button" class="category-btn catbtn category-card__btn is-active" data-category="todo-el-menu">
+                <span class="category-card__img-wrap">
+                  <img src="img/oferton familiar.png" alt="Todo el menú" class="category-card__img">
+                </span>
+                <span class="category-card__label">Todo el Menú</span>
+              </button>
+            </article>
+            <article class="category-card" role="listitem">
+              <button type="button" class="category-btn catbtn category-card__btn" data-category="ofertas-familiares">
+                <span class="category-card__img-wrap">
+                  <img src="img/oferton mas chaufa.png" alt="Ofertas familiares" class="category-card__img">
+                </span>
+                <span class="category-card__label">Ofertas Familiares</span>
+              </button>
+            </article>
+            <article class="category-card" role="listitem">
+              <button type="button" class="category-btn catbtn category-card__btn" data-category="ofertas-dos">
+                <span class="category-card__img-wrap">
+                  <img src="img/medio combo chaufa.png" alt="Ofertas para dos" class="category-card__img">
+                </span>
+                <span class="category-card__label">Ofertas para Dos</span>
+              </button>
+            </article>
+            <article class="category-card" role="listitem">
+              <button type="button" class="category-btn catbtn category-card__btn" data-category="ofertas-personales">
+                <span class="category-card__img-wrap">
+                  <img src="img/personal combo.png" alt="Ofertas personales" class="category-card__img">
+                </span>
+                <span class="category-card__label">Personales</span>
+              </button>
+            </article>
+            <article class="category-card" role="listitem">
+              <button type="button" class="category-btn catbtn category-card__btn" data-category="platos-extras">
+                <span class="category-card__img-wrap">
+                  <img src="img/lomo saltado de carne con arroz blanco.png" alt="Platos extras" class="category-card__img">
+                </span>
+                <span class="category-card__label">Platos Extras</span>
+              </button>
+            </article>
+            <article class="category-card" role="listitem">
+              <button type="button" class="category-btn catbtn category-card__btn" data-category="agregados">
+                <span class="category-card__img-wrap">
+                  <img src="img/pollo solo.png" alt="Agregados" class="category-card__img">
+                </span>
+                <span class="category-card__label">Agregados</span>
+              </button>
+            </article>
+            <article class="category-card" role="listitem">
+              <button type="button" class="category-btn catbtn category-card__btn" data-category="bebidas">
+                <span class="category-card__img-wrap">
+                  <img src="img/coca cola.png" alt="Bebidas" class="category-card__img">
+                </span>
+                <span class="category-card__label">Bebidas</span>
+              </button>
+            </article>
+            <article class="category-card" role="listitem">
+              <button type="button" class="category-btn catbtn category-card__btn" data-category="descartables">
+                <span class="category-card__img-wrap">
+                  <img src="img/aluza ct5.png" alt="Descartables" class="category-card__img">
+                </span>
+                <span class="category-card__label">Descartables</span>
+              </button>
+            </article>
+          </div>
+        </div>
+        <div class="categories-scrollbar" aria-hidden="true">
+          <button type="button" id="categories-scroll-prev" class="categories-scrollbar__arrow" aria-label="Desplazar categorías a la izquierda">‹</button>
+          <div class="categories-scrollbar__track">
+            <div id="categories-scrollbar-thumb" class="categories-scrollbar__thumb"></div>
+          </div>
+          <button type="button" id="categories-scroll-next" class="categories-scrollbar__arrow" aria-label="Desplazar categorías a la derecha">›</button>
+        </div>
+      </section>
 
 
       
