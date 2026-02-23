@@ -844,6 +844,9 @@ body {
 /* =================== CATEGORÍAS: igual a referencia, un poco más pequeñas, activo en rojo + subrayado =================== */
 .categories-section {
   margin-bottom: 0;
+  --scrollbar-accent: #4b5563;
+  --scrollbar-accent-hover: #374151;
+  --scrollbar-track: #e5e7eb;
 }
 
 .categories-scroll-wrap {
@@ -953,19 +956,19 @@ body {
   text-underline-offset: 3px;
 }
 
-/* Scrollbar personalizado: pegado debajo de las tarjetas */
+/* Scrollbar del indicador: más delgado, plomo y blanco */
 .categories-scrollbar {
   display: flex;
   align-items: center;
-  gap: 8px;
-  padding: 10px 6px 14px;
+  gap: 6px;
+  padding: 8px 6px 12px;
   margin-top: -2px;
 }
 
 .categories-scrollbar__track {
   flex: 1;
-  height: 6px;
-  background: #e5e7eb;
+  height: 3px;
+  background: var(--scrollbar-track, #e5e7eb);
   border-radius: 999px;
   position: relative;
   overflow: hidden;
@@ -977,22 +980,22 @@ body {
   left: 0;
   top: 0;
   height: 100%;
-  min-width: 40px;
+  min-width: 32px;
   width: 25%;
-  background: #D4AF37;
+  background: var(--scrollbar-accent, #4b5563);
   border-radius: 999px;
   pointer-events: none;
   transition: left 0.1s ease, width 0.1s ease;
 }
 
 .categories-scrollbar__arrow {
-  width: 32px;
-  height: 32px;
+  width: 28px;
+  height: 28px;
   flex-shrink: 0;
   border: none;
   background: transparent;
-  color: #D4AF37;
-  font-size: 1.5rem;
+  color: var(--scrollbar-accent, #4b5563);
+  font-size: 1.25rem;
   line-height: 1;
   cursor: pointer;
   padding: 0;
@@ -1002,8 +1005,8 @@ body {
   transition: color 0.2s ease, transform 0.15s ease;
 }
 .categories-scrollbar__arrow:hover {
-  color: #b8962e;
-  transform: scale(1.1);
+  color: var(--scrollbar-accent-hover, #374151);
+  transform: scale(1.08);
 }
 
 @media (min-width: 640px) {
