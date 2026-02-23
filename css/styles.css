@@ -910,7 +910,7 @@ body {
 
 .category-card__img-wrap {
   width: 100%;
-  height: 65%;
+  height: 78%;
   min-height: 0;
   overflow: hidden;
   flex-shrink: 0;
@@ -930,15 +930,18 @@ body {
   justify-content: center;
   width: 100%;
   flex: 1;
+  min-height: 0;
   font-weight: 700;
   font-size: 0.65rem;
   color: #374151;
   text-transform: none;
   letter-spacing: 0.01em;
-  padding: 4px 6px 6px;
+  padding: 0 6px;
   line-height: 1.2;
   transition: color 0.2s ease, text-decoration 0.2s ease;
   flex-shrink: 0;
+  text-align: center;
+  box-sizing: border-box;
 }
 .category-card__btn.is-active {
   background: transparent;
