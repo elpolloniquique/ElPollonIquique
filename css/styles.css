@@ -1419,6 +1419,7 @@ img{
 .header-blanco {
   background: #ffffff !important;
   border-bottom: 1px solid #e5e7eb;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.06);
 }
 .header-blanco .header-titulo {
   color: #1f2937 !important;
@@ -1787,6 +1788,7 @@ section h3[class*="text-1xl"],
 
 
 /* ===== GRID RESPONSIVE REAL PARA PRODUCTOS (centrado) ===== */
+/* padding-top: deja espacio igual al header fijo para que las tarjetas nunca queden tapadas (scroll manual o al elegir categoría) */
 #products-container{
   display: grid !important;
   gap: 18px !important;
@@ -1796,6 +1798,14 @@ section h3[class*="text-1xl"],
   margin-top: 2rem;
   margin-left: auto;
   margin-right: auto;
+  padding-top: 58px;
+  scroll-margin-top: 58px;
+}
+@media (min-width: 640px) {
+  #products-container { padding-top: 66px; scroll-margin-top: 66px; }
+}
+@media (min-width: 1024px) {
+  #products-container { padding-top: 72px; scroll-margin-top: 72px; }
 }
 
 /* Título de categoría: al canto izquierdo + línea roja hasta el final (recta de las imágenes) */
