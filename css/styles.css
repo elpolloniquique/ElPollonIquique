@@ -1419,7 +1419,7 @@ img{
 .header-blanco {
   background: #ffffff !important;
   border-bottom: 1px solid #e5e7eb;
-  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.06);
+  box-shadow: 0 2px 12px rgba(0, 0, 0, 0.253);
 }
 .header-blanco .header-titulo {
   color: #1f2937 !important;
