@@ -343,6 +343,32 @@ function showToast(msg) {
   setTimeout(() => t.remove(), 3000);
 }
 
+// ======== WRAP TEXTO PARA TICKET 80mm (máx 35 caracteres por línea) ========
+const TICKET_LINE_LENGTH = 35;
+function wrapText(text, maxLen) {
+  const len = maxLen != null ? maxLen : TICKET_LINE_LENGTH;
+  const str = String(text || '').trim();
+  if (!str) return '';
+  const lines = [];
+  let remaining = str;
+  while (remaining.length > 0) {
+    if (remaining.length <= len) {
+      lines.push(remaining);
+      break;
+    }
+    let chunk = remaining.slice(0, len);
+    const lastSpace = chunk.lastIndexOf(' ');
+    if (lastSpace > 0) {
+      chunk = chunk.slice(0, lastSpace);
+      remaining = remaining.slice(lastSpace + 1).trim();
+    } else {
+      remaining = remaining.slice(len);
+    }
+    lines.push(chunk);
+  }
+  return lines.join('\n');
+}
+
 // ======== TEXTO WHATSAPP (USADO TAMBIÉN PARA IMPRESORA TÉRMICA) ========
 function buildWhatsappTextFromOrder(order) {
   if (!order) return '';
@@ -373,10 +399,16 @@ function buildWhatsappTextFromOrder(order) {
   msg += `◆ DATOS DEL CLIENTE\n`;
   msg += `────────────────────────────────\n\n`;
 
-  // DATOS CLIENTE (seguro si customer viene vacío desde BD)
+  // DATOS CLIENTE (seguro si customer viene vacío desde BD). Dirección y comentarios con wrap 35 chars para ticket 80mm.
   msg += `◆ Nombre:   ${customer.name || '-'}\n`;
   msg += `◆ Teléfono: ${customer.phone || '-'}\n`;
-  msg += `◆ Dirección: ${customer.address || '-'}\n\n`;
+  const addrWrapped = wrapText(customer.address, TICKET_LINE_LENGTH);
+  msg += `◆ Dirección:\n${addrWrapped ? addrWrapped.split('\n').map(l => '   ' + l).join('\n') : '   -'}\n\n`;
+  const commentsRaw = (customer.comments || '').trim();
+  if (commentsRaw) {
+    const commentsWrapped = wrapText(commentsRaw, TICKET_LINE_LENGTH);
+    msg += `◆ Comentarios:\n${commentsWrapped.split('\n').map(l => '   ' + l).join('\n')}\n\n`;
+  }
 
   // DETALLE PEDIDO
   msg += `────────────────────────────────\n`;
@@ -1294,6 +1326,8 @@ if (checkoutForm) {
     e.preventDefault();
     const name = document.getElementById('customer-name').value.trim();
     const address = document.getElementById('customer-address').value.trim();
+    const commentsEl = document.getElementById('customer-comments');
+    const comments = commentsEl ? commentsEl.value.trim() : '';
     const phone = document.getElementById('customer-phone').value.trim();
 
     let total = 0;
@@ -1317,7 +1351,7 @@ if (checkoutForm) {
       id: 'P' + Date.now(),
       createdAt: new Date().toISOString(),
       ticketNumber,
-      customer: { name, address, phone },
+      customer: { name, address, phone, ...(comments ? { comments } : {}) },
       items: itemsForOrder,
       total,
       status: 'Pendiente',

@@ -516,16 +516,22 @@
                  placeholder="Ej: Juan Pérez">
         </div>
         <div class="mb-4">
-          <label class="block font-bold mb-2 text-gray-700">Dirección de Entrega:</label>
-          <textarea id="customer-address" required
-                    class="w-full border-2 border-gray-300 rounded-lg p-3 focus:border-red-500 focus:outline-none"
-                    rows="3" placeholder="Ej: Av. Principal 123, Iquique"></textarea>
-        </div>
-        <div class="mb-6">
           <label class="block font-bold mb-2 text-gray-700">Número de Teléfono:</label>
           <input type="tel" id="customer-phone" required
                  class="w-full border-2 border-gray-300 rounded-lg p-3 focus:border-red-500 focus:outline-none"
                  placeholder="+56 9 8692 5310">
+        </div>
+        <div class="mb-4">
+          <label class="block font-bold mb-2 text-gray-700">Dirección de Entrega:</label>
+          <textarea id="customer-address" required
+                    class="w-full border-2 border-gray-300 rounded-lg p-3 focus:border-red-500 focus:outline-none textarea-ticket-wrap"
+                    rows="3" placeholder="Ej: Av. Principal 123, Iquique"></textarea>
+        </div>
+        <div class="mb-6">
+          <label class="block font-bold mb-2 text-gray-700">Comentarios (opcional):</label>
+          <textarea id="customer-comments"
+                    class="w-full border-2 border-gray-300 rounded-lg p-3 focus:border-red-500 focus:outline-none textarea-ticket-wrap"
+                    rows="2" placeholder="Ej: Sin cebolla, tocar timbre 2..."></textarea>
         </div>
         <div class="flex gap-3">
           <button type="button" id="cancel-checkout"

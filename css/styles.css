@@ -2569,6 +2569,23 @@ body * {
   overflow-y: auto;
   -webkit-overflow-scrolling: touch;
 }
+
+/* Textareas del modal Datos de Entrega: wrap visual ~25 caracteres (ticket 80mm) */
+.textarea-ticket-wrap {
+  width: 100%;
+  max-width: 35ch;
+  min-width: 20ch;
+  box-sizing: border-box;
+  word-wrap: break-word;
+  white-space: pre-wrap;
+  overflow-wrap: break-word;
+}
+@media (max-width: 480px) {
+  .textarea-ticket-wrap {
+    max-width: 100%;
+  }
+}
+
 @media (max-width: 480px) {
   .modal .bg-white { margin: 8px auto 16px; max-width: calc(100vw - 16px); padding: 1rem !important; }
   #options-modal .grid.grid-cols-2 { grid-template-columns: 1fr; }
