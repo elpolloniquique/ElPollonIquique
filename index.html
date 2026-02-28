@@ -328,7 +328,7 @@
     <div class="bg-white rounded-lg p-6 max-w-md w-full mx-4 my-8">
       <div class="flex justify-between items-center mb-4">
         <h3 class="text-xl font-bold text-red-800">🚚 Pedido con Delivery</h3>
-        <button id="modal-delivery-close" class="text-gray-500 hover:text-gray-700 text-2xl leading-none">&times;</button>
+        <button id="modal-delivery-close" type="button" class="modal-close-btn text-gray-500 hover:text-gray-700 text-2xl leading-none" aria-label="Cerrar">&times;</button>
       </div>
       <p class="text-sm text-gray-700 mb-3">
         Esta plataforma está diseñada para que realices tu pedido con
@@ -356,7 +356,7 @@
     <div class="bg-white rounded-lg p-6 max-w-md w-full mx-4 my-8">
       <div class="flex justify-between items-center mb-4">
         <h3 class="text-xl font-bold text-red-800">📅 Reservas</h3>
-        <button id="modal-reservas-close" class="text-gray-500 hover:text-gray-700 text-2xl leading-none">&times;</button>
+        <button id="modal-reservas-close" type="button" class="modal-close-btn text-gray-500 hover:text-gray-700 text-2xl leading-none" aria-label="Cerrar">&times;</button>
       </div>
       <p class="text-sm text-gray-700 mb-3">
         Para realizar una <strong>reserva</strong> en Pollería El Pollón se requiere:
@@ -384,7 +384,7 @@
     <div class="bg-white rounded-lg p-6 max-w-md w-full mx-4 my-8">
       <div class="flex justify-between items-center mb-4">
         <h3 class="text-xl font-bold text-red-800">🛍️ Pedido con Retiro en Local</h3>
-        <button id="modal-retiros-close" class="text-gray-500 hover:text-gray-700 text-2xl leading-none">&times;</button>
+        <button id="modal-retiros-close" type="button" class="modal-close-btn text-gray-500 hover:text-gray-700 text-2xl leading-none" aria-label="Cerrar">&times;</button>
       </div>
       <p class="text-sm text-gray-700 mb-3">
         Para realizar un <strong>pedido con retiro</strong> en el local:
@@ -489,7 +489,7 @@
     <div class="bg-white rounded-lg p-6 max-w-2xl w-full mx-4 my-8">
       <div class="flex justify-between items-center mb-6">
         <h3 class="text-2xl font-bold text-red-800">🛒 Tu Carrito</h3>
-        <button id="close-cart" class="text-gray-500 hover:text-gray-700 text-3xl">×</button>
+        <button id="close-cart" type="button" class="modal-close-btn text-gray-500 hover:text-gray-700 text-3xl" aria-label="Cerrar carrito">×</button>
       </div>
       <div id="cart-items" class="mb-6 max-h-96 overflow-y-auto"></div>
       <div class="border-t-2 pt-4 mb-6">
@@ -540,8 +540,8 @@
   </div>
 
   <!-- Asistente virtual tipo chatbot -->
-  <div id="chatbot-toggle" class="chatbot-toggle">
-    <!-- <span>🟢</span><span></span> -->
+  <div id="chatbot-toggle" class="chatbot-toggle" role="button" aria-label="Abrir asistente" tabindex="0">
+    <span aria-hidden="true">💬</span>
   </div>
 
   <div id="chatbot-panel" class="chatbot-panel hidden">

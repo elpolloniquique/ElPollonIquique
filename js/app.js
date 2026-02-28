@@ -9,9 +9,10 @@ const BAG_PRICE = 200; // CLP
 const WHATSAPP_NUMBER = '56986925310';
 
 // ======================= FIREBASE CONFIGURACIÓN =========================
-// REGLAS REQUERIDAS (Firebase Console > Realtime Database > Reglas):
-// { "rules": { "pollon_orders_v1": { ".read": true, ".write": true } } }
-// Para Firestore: crear colección pollon_orders_v1 y permitir lectura/escritura
+// Realtime Database: los pedidos se guardan en la ruta "pollon_orders_v1".
+// Reglas obligatorias en Firebase Console > Realtime Database > Reglas:
+//   { "rules": { "pollon_orders_v1": { ".read": true, ".write": true } } }
+// Ver FIREBASE-BASE-DATOS.md para desplegar reglas y comprobar que todo funcione.
 // -----------------------------------------------------------------------
 
 
@@ -99,7 +100,10 @@ function initOrdersBackend() {
           const val = snapshot.val();
           if (val && typeof val === 'object') {
             Object.keys(val).forEach(key => {
-              list.push({ id: key, ...val[key] });
+              const data = val[key];
+              if (data && typeof data === 'object') {
+                list.push({ id: key, ...data });
+              }
             });
           }
           syncOrdersToList(list);
@@ -154,8 +158,11 @@ function loadOrdersFromLocal() {
   }
 }
 
-// Agregar pedido (Firestore o Realtime DB)
+// Agregar pedido (Firestore o Realtime DB). El id debe ser válido para Firebase (sin ., $, #, [, ], /).
 function addOrderToBackend(order) {
+  if (!order || !order.id) {
+    return Promise.reject(new Error('Pedido inválido: falta id'));
+  }
   const safe = sanitizeForFirestore(order);
 
   if (ordersRef && db && !useRealtimeDB) {
@@ -170,8 +177,11 @@ function addOrderToBackend(order) {
   return Promise.reject(new Error('Base de datos no disponible'));
 }
 
-// Actualizar pedido
+// Actualizar pedido (estado, deliveredAt, etc.)
 function updateOrderInBackend(order) {
+  if (!order || !order.id) {
+    return Promise.reject(new Error('Pedido inválido: falta id'));
+  }
   const safe = sanitizeForFirestore(order);
   if (ordersRef && db && !useRealtimeDB) {
     return ordersRef.doc(order.id).set(safe, { merge: true });
@@ -333,9 +343,11 @@ function showToast(msg) {
 }
 
 // ======== TEXTO WHATSAPP (USADO TAMBIÉN PARA IMPRESORA TÉRMICA) ========
-   // ======== TEXTO WHATSAPP (USADO TAMBIÉN PARA IMPRESORA TÉRMICA) ========
 function buildWhatsappTextFromOrder(order) {
-  const { customer, items, total } = order;
+  if (!order) return '';
+  const customer = order.customer || {};
+  const items = Array.isArray(order.items) ? order.items : [];
+  const total = order.total != null ? order.total : 0;
 
   // Formato de fecha y hora en base a createdAt
   const fechaBase = order.createdAt ? new Date(order.createdAt) : new Date();
@@ -360,10 +372,10 @@ function buildWhatsappTextFromOrder(order) {
   msg += `◆ DATOS DEL CLIENTE\n`;
   msg += `────────────────────────────────\n\n`;
 
-  // DATOS CLIENTE
-  msg += `◆ Nombre:   ${customer.name}\n`;
-  msg += `◆ Teléfono: ${customer.phone}\n`;
-  msg += `◆ Dirección: ${customer.address}\n\n`;
+  // DATOS CLIENTE (seguro si customer viene vacío desde BD)
+  msg += `◆ Nombre:   ${customer.name || '-'}\n`;
+  msg += `◆ Teléfono: ${customer.phone || '-'}\n`;
+  msg += `◆ Dirección: ${customer.address || '-'}\n\n`;
 
   // DETALLE PEDIDO
   msg += `────────────────────────────────\n`;
@@ -371,12 +383,16 @@ function buildWhatsappTextFromOrder(order) {
   msg += `────────────────────────────────\n\n`;
 
   items.forEach((it, i) => {
-    msg += `${i + 1}. ${it.name} × ${it.qty}\n`;
-    msg += `— Subtotal: ${money(it.total)}\n`;
+    if (!it || typeof it !== 'object') return;
+    const name = it.name || 'Producto';
+    const qty = it.qty != null ? it.qty : 1;
+    const totalItem = it.total != null ? it.total : 0;
+    msg += `${i + 1}. ${name} × ${qty}\n`;
+    msg += `— Subtotal: ${money(totalItem)}\n`;
     if (it.drink) {
       msg += `— Bebida: ${it.drink}\n`;
     }
-    if (it.bagQty > 0) {
+    if ((it.bagQty || 0) > 0) {
       msg += `— Bolsa: x ${it.bagQty} (+ ${money(BAG_PRICE)} /u)\n`;
     }
     msg += `\n`;
@@ -1214,9 +1230,10 @@ document.addEventListener('click', (e) => {
     const id = e.target.dataset.id;
     const order = orders.find(o => o.id === id);
     if (order) {
-      const phoneRaw = (order.customer.phone || '').replace(/\D/g, '');
+      const cust = order.customer || {};
+      const phoneRaw = (cust.phone || '').replace(/\D/g, '');
       const to = phoneRaw || WHATSAPP_NUMBER;
-      let msg = `Hola ${order.customer.name || ''}, te escribimos de Pollería El Pollón respecto a tu pedido ${order.id} (${order.status}).`;
+      let msg = `Hola ${cust.name || ''}, te escribimos de Pollería El Pollón respecto a tu pedido ${order.id} (${order.status}).`;
       const url = `https://wa.me/${to}?text=${encodeURIComponent(msg)}`;
       window.open(url, '_blank', 'noopener,noreferrer');
     }
@@ -1292,8 +1309,8 @@ if (checkoutForm) {
       });
     });
 
-    // 🔢 NUEVO: número correlativo de ticket (001, 002, 003, ...)
-    const ticketNumber = String(orders.length + 1).padStart(3, "0");
+    // Número de ticket correlativo (001, 002, ...). Si la BD no ha cargado aún, se usa al menos 1.
+    const ticketNumber = String(Math.max(1, orders.length + 1)).padStart(3, "0");
 
     const order = {
       id: 'P' + Date.now(),
