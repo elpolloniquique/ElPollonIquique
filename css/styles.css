@@ -1310,10 +1310,46 @@ section.py-5.px-5.bg-gray-50 {
 }
 
 @media (min-width: 1024px) {
-  .category-card { width: 148px; height: 152px; }
-  .category-card__label { font-size: 0.75rem; height: 30px; }
-  .categories-carousel { justify-content: center; gap: 12px; }
-  .categories-scroll-wrap { overflow-x: auto; }
+  /* PC: las 8 categorías visibles sin scroll, ajustadas al ancho; sin indicador de scroll */
+  .categories-section .categories-scroll-wrap {
+    overflow: visible;
+    cursor: default;
+    -webkit-overflow-scrolling: auto;
+  }
+  .categories-section .categories-carousel {
+    display: grid;
+    grid-template-columns: repeat(8, 1fr);
+    gap: 14px;
+    width: 100%;
+    min-width: 0;
+    max-width: 100%;
+  }
+  .categories-section .category-card {
+    width: 100%;
+    max-width: none;
+    height: auto;
+  }
+  .category-card__img-wrap {
+    width: 100%;
+    aspect-ratio: 1 / 0.88;
+    flex: 0 0 auto;
+    min-height: 0;
+    overflow: hidden;
+  }
+  .category-card__img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    object-position: center;
+  }
+  .category-card__label {
+    font-size: 0.8125rem;
+    height: 44px;
+    padding: 0 10px;
+  }
+  .categories-section .categories-scrollbar {
+    display: none;
+  }
 }
 
 /* ======================================================================= */
@@ -2672,16 +2708,18 @@ body * {
   width: min(88vw, 280px);
 }
 
-/* ---- 3. Categorías: carrusel sin overflow de página ---- */
+/* ---- 3. Categorías: carrusel sin overflow de página (tamaño base: móvil/tablet; PC tiene tamaño mayor en bloque anterior) ---- */
 .categories-scroll-wrap {
   overflow-x: auto;
   overflow-y: hidden;
   -webkit-overflow-scrolling: touch;
   max-width: 100%;
 }
-.category-card {
-  max-width: min(124px, calc(44vw - 16px));
-  width: 124px;
+@media (max-width: 1023px) {
+  .category-card {
+    max-width: min(124px, calc(44vw - 16px));
+    width: 124px;
+  }
 }
 @media (max-width: 360px) {
   .category-card {
