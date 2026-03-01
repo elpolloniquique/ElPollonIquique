@@ -2272,7 +2272,7 @@ section h3[class*="text-1xl"],
   flex: 1;
   height: 3px;
   min-height: 3px;
-  background: #FFFFFF;
+  background: #442c2c;
   border-radius: 2px;
   align-self: center;
 }
