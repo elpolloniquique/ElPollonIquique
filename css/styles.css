@@ -1925,6 +1925,22 @@ header .max-w-7xl {
   min-width: 0;
 }
 .header-logo { flex-shrink: 0; }
+/* Enlace logo + marca: vuelve al inicio con un clic, sin estilo de link */
+.header-logo-link {
+  text-decoration: none;
+  color: inherit;
+  cursor: pointer;
+  transition: opacity 0.2s ease;
+}
+.header-logo-link:hover {
+  opacity: 0.92;
+}
+.header-logo-link:focus,
+.header-logo-link:active {
+  outline: none;
+  border: none;
+  box-shadow: none;
+}
 /* Centro del header: aprovecha el espacio entre logo y menú */
 .header-centro {
   flex: 1 1 auto;
