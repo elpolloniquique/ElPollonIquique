@@ -1280,21 +1280,6 @@ document.addEventListener('click', (e) => {
     }
   }
 
-  // CHATBOT toggle
-  if (e.target.id === 'chatbot-toggle' || (e.target.closest && e.target.closest('#chatbot-toggle'))) {
-    const panel = document.getElementById('chatbot-panel');
-    if (panel) panel.classList.toggle('hidden');
-  }
-  if (e.target.id === 'chatbot-close') {
-    const panel = document.getElementById('chatbot-panel');
-    if (panel) panel.classList.add('hidden');
-  }
-
-  // CHATBOT chips
-  if (e.target.classList.contains('chatbot-chip')) {
-    const action = e.target.dataset.action;
-    handleChatbotAction(action);
-  }
 });
 
 // ADMIN filtros (input)
@@ -1639,110 +1624,6 @@ updateCarousel(true);
   }
 })();
 
-// --------- CHATBOT LÓGICA ----------
-const chatbotMessagesEl = document.getElementById('chatbot-messages');
-
-function appendChatbotMessage(text, from = 'bot') {
-  if (!chatbotMessagesEl) return;
-  const div = document.createElement('div');
-  div.className = 'chatbot-msg ' + (from === 'bot' ? 'chatbot-msg-bot' : 'chatbot-msg-user');
-  div.innerHTML = text;
-  chatbotMessagesEl.appendChild(div);
-  chatbotMessagesEl.scrollTop = chatbotMessagesEl.scrollHeight;
-}
-
-function chatbotWelcome() {
-  appendChatbotMessage(`
-    👋 ¡Bienvenido a <strong>Pollería El Pollón</strong> en Iquique!<br><br>
-    Soy tu asistente virtual tipo <strong>WhatsApp</strong> 💬.<br><br>
-    Te puedo ayudar con:<br>
-    • Ver combos familiares, para dos y personales 🍗<br>
-    • Ubicación, horarios y delivery 🚚<br>
-    • Método de pago y redes sociales 💳📲<br>
-    • Dejar tu pedido listo para WhatsApp ✅<br><br>
-    Elige una opción de abajo y te llevo directo donde necesitas.
-  `, 'bot');
-}
-
-function handleChatbotAction(action) {
-  if (action === 'familiares') {
-    appendChatbotMessage('Quiero ver los combos familiares más pedidos.', 'user');
-    appendChatbotMessage(`
-      Excelente elección 🙌<br><br>
-      Nuestros <strong>Combos Familiares</strong> son los más vendidos del local:<br><br>
-      ⭐ <strong>Ofertón más chaufa</strong>: pollo entero + papas + chaufa + ensalada + bebida 1.5L.<br>
-      ⭐ <strong>Ofertón pura papa</strong>: ideal para los que aman las papas fritas 🤤<br>
-      ⭐ <strong>Mega Familiar</strong>: pensado para grupos grandes.<br><br>
-      👉 Te llevo directo a la sección de <strong>Ofertas Familiares</strong> para que agregues tu combo al carrito.
-    `, 'bot');
-    const sectionBtn = document.querySelector('.category-btn[data-category="ofertas-familiares"]');
-    if (sectionBtn) sectionBtn.click();
-    document.querySelector('#products-container')?.scrollIntoView({ behavior: 'smooth', block: 'start' });
-  }
-
-  if (action === 'horarios') {
-    appendChatbotMessage('Quiero saber los horarios y la dirección.', 'user');
-    appendChatbotMessage(`
-      Perfecto 🕐<br><br>
-      📍 <strong>Dirección:</strong><br>
-      Calle Vivar 1086, Iquique, Chile.<br><br>
-      🕐 <strong>Horario de atención:</strong><br>
-      Lunes a Domingo de <strong>11:30 a 23:00 hrs</strong>.<br><br>
-      Puedes venir al local, retirar para llevar o pedir delivery.
-    `, 'bot');
-  }
-
-  if (action === 'delivery') {
-    appendChatbotMessage('Quiero información del delivery.', 'user');
-    appendChatbotMessage(`
-      Te explico el delivery 🚚<br><br>
-      • Repartimos dentro de Iquique 🏙️<br>
-      • Costo de envío según la zona:<br>
-      &nbsp;&nbsp;👉 Entre <strong>$2.500 y $4.000</strong> aprox.<br><br>
-      El valor exacto se confirma por WhatsApp según tu dirección.<br><br>
-      Sugerencia: arma tu pedido en la carta y al final lo enviamos directo a WhatsApp ✅
-    `, 'bot');
-  }
-
-  if (action === 'pedido') {
-    appendChatbotMessage('Quiero dejar mi pedido listo por WhatsApp.', 'user');
-    appendChatbotMessage(`
-      Vamos a dejar tu pedido listo 😋<br><br>
-      1️⃣ Agrega tus combos y platos al carrito.<br>
-      2️⃣ Presiona <strong>"Realizar Pedido por WhatsApp"</strong>.<br>
-      3️⃣ Completa tus datos y confirma.<br><br>
-      También puedes escribirnos directo aquí 👇<br><br>
-      <a href="https://wa.me/${WHATSAPP_NUMBER}?text=${encodeURIComponent('Hola, quiero hacer un pedido en Pollería El Pollón. ¿Me pueden ayudar con las opciones de combos familiares?')}"
-         target="_blank"
-         class="inline-block bg-green-600 text-white px-3 py-2 rounded-lg text-xs font-semibold">
-        💬 Abrir WhatsApp
-      </a>
-    `, 'bot');
-  }
-
-  if (action === 'pagos') {
-    appendChatbotMessage('Quiero saber los métodos de pago.', 'user');
-    appendChatbotMessage(`
-      💳 <strong>Método de pago actual</strong><br><br>
-      • Aceptamos <strong>solo efectivo</strong> en este momento.<br>
-      • El pago se realiza <strong>contra entrega</strong> en el local o al recibir tu pedido a domicilio.<br><br>
-      Cualquier cambio futuro en métodos de pago lo informaremos por nuestras redes sociales.
-    `, 'bot');
-  }
-
-  if (action === 'redes') {
-    appendChatbotMessage('Quiero ver las redes sociales.', 'user');
-    appendChatbotMessage(`
-      📲 <strong>Nuestras redes sociales</strong><br><br>
-      • WhatsApp: <a href="https://wa.me/56968788613" target="_blank" class="text-green-600 font-semibold">+56 9 6878 8613</a><br>
-      • Facebook: <span class="font-semibold">Pollería El Pollón (Iquique)</span><br>
-      • Instagram y TikTok: contenido de promociones, combos y novedades 🔥<br><br>
-      Al final de la página tienes los botones directos a todas las redes.
-    `, 'bot');   
-  }
-}
-
-
 // ===== Flecha para deslizar categorías (móvil) =====
 const catbarScroll = document.getElementById('catbar-scroll');
 const catbarNext = document.getElementById('catbar-next');
@@ -1921,8 +1802,4 @@ buildSidebarGallery();
 
 
 updateCartUI();
-if (chatbotMessagesEl) {
-  chatbotWelcome();
-}
-
 

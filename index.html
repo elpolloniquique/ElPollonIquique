@@ -19,6 +19,11 @@
   <meta property="og:url" content="https://elpolloniquique.github.io/el-pollon-iquique/">
   <meta property="og:type" content="website">
 
+  <!-- Tipografía moderna (restaurante 2026) -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+
   <!-- Tailwind CDN -->
   <script src="https://cdn.tailwindcss.com"></script>
 
@@ -542,33 +547,6 @@
           </button>
         </div>
       </form>
-    </div>
-  </div>
-
-  <!-- Asistente virtual tipo chatbot -->
-  <div id="chatbot-toggle" class="chatbot-toggle" role="button" aria-label="Abrir asistente" tabindex="0">
-    <span aria-hidden="true">💬</span>
-  </div>
-
-  <div id="chatbot-panel" class="chatbot-panel hidden">
-    <div class="chatbot-header">
-      <div class="chatbot-header-left">
-        <!-- <div class="chatbot-avatar">🟢</div> -->
-        <div>
-          <div class="text-xs opacity-80">Asistente virtual</div>
-          <div class="text-sm font-semibold">El Pollón Iquique</div>
-        </div>
-      </div>
-      <button id="chatbot-close" class="text-white text-lg leading-none">&times;</button>
-    </div>
-    <div id="chatbot-messages" class="chatbot-body flex flex-col"></div>
-    <div class="chatbot-quick-actions">
-      <button class="chatbot-chip" data-action="familiares">👨‍👩‍👧‍👦 Combos Familiares</button>
-      <button class="chatbot-chip" data-action="horarios">🕐 Horarios y dirección</button>
-      <button class="chatbot-chip" data-action="delivery">🚚 Delivery y zonas</button>
-      <button class="chatbot-chip" data-action="pedido">💬 Hacer un pedido</button>
-      <button class="chatbot-chip" data-action="pagos">💳 Métodos de pago</button>
-      <button class="chatbot-chip" data-action="redes">📲 Redes sociales</button>
     </div>
   </div>
 
