@@ -1354,17 +1354,24 @@ section.py-5.px-5.bg-gray-50 {
 
 /* ======================================================================= */
 
-/* =================== AVISO / CTA — Rojo moderno =================== */
-.aviso{
-  background: var(--color-red);
-  padding: 10px 25px;
+/* =================== AVISO / CTA — Franja delgada, rojo de la página, texto ajustado =================== */
+.aviso {
+  background: #C1121F;
+  padding: 6px 20px;
   text-align: center;
-  font-size: var(--text-sm);
-  color: var(--color-white);
+  font-size: 0.8125rem;
+  color: #FFFFFF;
   font-weight: 600;
   border-radius: 0;
+  line-height: 1.35;
 }
-.aviso h2 { color: var(--color-white) !important; }
+.aviso h2 {
+  color: #FFFFFF !important;
+  font-size: 0.8125rem !important;
+  font-weight: 600;
+  margin: 0;
+  letter-spacing: 0.02em;
+}
 
  /* ===================== ESTILO SECTION COMBOS ===================== */
   .pollon-combos{
@@ -2180,8 +2187,8 @@ section .text-sm { font-size: var(--text-sm) !important; }
 section .text-lg { font-size: var(--text-lg) !important; }
 section .text-xl { font-size: var(--text-xl) !important; }
 section .text-2xl { font-size: var(--text-2xl) !important; }
-.aviso { font-size: var(--text-sm); text-align: center; }
-.aviso h2 { font-size: var(--text-base); font-weight: 600; }
+.aviso { font-size: 0.8125rem; text-align: center; }
+.aviso h2 { font-size: 0.8125rem; font-weight: 600; }
 section h2,
 section h2.text-2xl,
 section h2[class*="text-2xl"] { font-size: var(--text-xl) !important; font-weight: 700; text-align: center; }
@@ -2265,7 +2272,7 @@ section h3[class*="text-1xl"],
   flex: 1;
   height: 3px;
   min-height: 3px;
-  background: #dc2626;
+  background: #FFFFFF;
   border-radius: 2px;
   align-self: center;
 }
@@ -2634,8 +2641,8 @@ section h3[class*="text-1xl"],
   .product-card .p-4 { padding: 8px !important; }
   .product-card h3 { font-size: 0.9375rem !important; }
   .hero-banner { height: clamp(180px, 45vw, 280px); }
-  .aviso { padding: 10px 16px; font-size: var(--text-sm); text-align: center; }
-  .aviso h2 { font-size: 0.9375rem; }
+  .aviso { padding: 6px 16px; font-size: 0.8125rem; text-align: center; }
+  .aviso h2 { font-size: 0.8125rem; }
   section h2 { font-size: 1.125rem !important; }
   #products-container + * { margin-top: 0; }
 }
@@ -2894,9 +2901,11 @@ body * {
 }
 
 /* ---- 8. Tipografía legible (rem/clamp) ---- */
-.aviso h2,
 section h2 {
   font-size: clamp(0.9375rem, 4vw, 1.5rem) !important;
+}
+.aviso h2 {
+  font-size: clamp(0.75rem, 1.5vw, 0.8125rem) !important;
 }
 .footer-title { font-size: clamp(1rem, 2.5vw, 1.25rem); }
 .footer-subtitle { font-size: clamp(0.75rem, 1.5vw, 0.875rem); }
@@ -2905,7 +2914,7 @@ section h2 {
 .combo-content h3 { font-size: clamp(1rem, 2.5vw, 1.25rem); }
 .combo-content p { font-size: clamp(0.8125rem, 1.5vw, 0.9375rem); }
 @media (max-width: 320px) {
-  .aviso h2 { font-size: 0.875rem !important; }
+  .aviso h2 { font-size: 0.75rem !important; }
   section h2 { font-size: 1rem !important; }
 }
 
@@ -3036,13 +3045,14 @@ img {
   .combo-content { padding: 12px 16px; }
 }
 
-/* ---- 13. Aviso y secciones ---- */
+/* ---- 13. Aviso: franja más delgada, texto pequeño ---- */
 .aviso {
-  padding: clamp(8px, 2vw, 16px) clamp(12px, 4vw, 24px);
-  font-size: clamp(0.75rem, 2vw, 0.875rem);
+  padding: clamp(5px, 1.2vw, 8px) clamp(12px, 4vw, 24px);
+  font-size: clamp(0.75rem, 1.5vw, 0.8125rem);
   max-width: 100%;
 }
 .aviso h2 {
+  font-size: clamp(0.75rem, 1.5vw, 0.8125rem) !important;
   word-wrap: break-word;
   overflow-wrap: break-word;
 }
