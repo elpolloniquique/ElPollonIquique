@@ -32,8 +32,8 @@
 </head>
 <body class="bg-white">
 
-  <!-- Header fijo: fondo blanco, texto oscuro, menú hamburguesa siempre visible -->
-  <header class="header-fijo header-blanco py-2 sm:py-3 px-0 sm:px-4 shadow-md">
+  <!-- Header: rojo intenso #C1121F tal cual referencia (logo blanco, Llámanos rojo oscuro, botón Ver Mi Pedido blanco con texto rojo) -->
+  <header class="header-fijo header-blanco header-ariztia py-2 sm:py-3 px-0 sm:px-4">
     <div class="max-w-7xl 2xl:max-w-[1900px] mx-auto px-2 lg:px-3">
       <div class="header-inner flex items-center justify-between flex-nowrap gap-1 sm:gap-2">
         <div class="header-logo flex items-center gap-2 flex-shrink-0">
@@ -70,11 +70,11 @@
 
 
         <div class="hidden lg:flex items-center gap-3 flex-shrink-0">
-          <div class="header-llamanos flex items-center gap-2 px-4 py-2 rounded-lg border border-gray-200 bg-gray-50">
-            <span>📞</span>
+          <div class="header-llamanos flex items-center gap-2 px-4 py-2 rounded-lg">
+            <span aria-hidden="true">📞</span>
             <div>
-              <p class="text-xs text-gray-600">Llámanos</p>
-              <p class="font-bold text-sm text-gray-900">+56 9 8692 5310</p>
+              <p class="text-xs text-white opacity-90">Llámanos</p>
+              <p class="font-bold text-sm text-white">+56 9 8692 5310</p>
             </div>
           </div>
           <button id="view-cart-desktop"

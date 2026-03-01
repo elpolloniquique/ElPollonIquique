@@ -1778,6 +1778,88 @@ img{
   color: #B22222;
 }
 
+/* ===== HEADER TAL CUAL REFERENCIA: rojo #C1121F, logo blanco, Llámanos rojo oscuro, botón blanco con texto rojo ===== */
+.header-blanco.header-ariztia {
+  background: #C1121F !important;
+  border-bottom: none;
+  box-shadow: none;
+}
+.header-blanco.header-ariztia .header-titulo {
+  color: #FFFFFF !important;
+  font-weight: 800;
+  text-transform: uppercase;
+  letter-spacing: 0.02em;
+}
+.header-blanco.header-ariztia .header-sub {
+  color: #FFFFFF !important;
+}
+.header-blanco.header-ariztia .header-pregunta {
+  color: rgba(255, 255, 255, 0.88) !important;
+}
+.header-blanco.header-ariztia .pedido-link {
+  color: #FFFFFF !important;
+  opacity: 1;
+  font-weight: 700;
+}
+.header-blanco.header-ariztia .pedido-link::after {
+  background: transparent;
+}
+.header-blanco.header-ariztia .pedido-link:hover {
+  color: #FFFFFF !important;
+  opacity: 0.92;
+}
+.header-blanco.header-ariztia .menu-dd-btn.header-menu-btn,
+.header-blanco.header-ariztia .menu-dd-btn {
+  color: #FFFFFF !important;
+}
+.header-blanco.header-ariztia .menu-dd-btn:hover {
+  background: rgba(255, 255, 255, 0.12) !important;
+  color: #FFFFFF !important;
+}
+/* Logo: cuadrado blanco redondeado */
+.header-blanco.header-ariztia .logo {
+  background: #FFFFFF !important;
+  border: none;
+  border-radius: 10px;
+  padding: 4px;
+  overflow: hidden;
+}
+.header-blanco.header-ariztia .header-titulo { font-size: var(--text-xl); }
+@media (min-width: 768px) {
+  .header-blanco.header-ariztia .header-titulo { font-size: var(--text-2xl); }
+}
+.header-blanco.header-ariztia .header-sub { font-size: var(--text-xs); }
+/* Caja Llámanos: rojo más oscuro #9B0F1A, texto blanco */
+.header-blanco.header-ariztia .header-llamanos {
+  background: #9B0F1A !important;
+  border: none;
+  border-radius: 10px;
+  padding: 10px 16px;
+}
+.header-blanco.header-ariztia .header-llamanos p,
+.header-blanco.header-ariztia .header-llamanos .text-white {
+  color: #FFFFFF !important;
+}
+/* Botón Ver Mi Pedido: fondo blanco, texto e ícono rojo #C1121F, borde rojo suave */
+.header-blanco.header-ariztia #view-cart-desktop.btn-cart-pro {
+  background: #FFFFFF !important;
+  color: #C1121F !important;
+  border: 1px solid rgba(193, 18, 31, 0.4);
+  border-radius: 10px;
+  box-shadow: 0 1px 4px rgba(0, 0, 0, 0.1);
+  transition: background 0.2s ease, transform 0.2s ease;
+}
+.header-blanco.header-ariztia #view-cart-desktop.btn-cart-pro:hover {
+  background: #FFFFFF !important;
+  color: #C1121F !important;
+  transform: translateY(-1px);
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.12);
+}
+.header-blanco.header-ariztia .cart-badge-pro {
+  background: #C1121F !important;
+  color: #FFFFFF !important;
+}
+
 /* Espacio superior para que el contenido no quede bajo el header fijo */
 body {
   padding-top: 58px;
