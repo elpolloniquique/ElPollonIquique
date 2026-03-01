@@ -413,17 +413,21 @@ section.py-5.px-5.bg-gray-50 {
   min-height: 44px;
 }
 
-/* Toast */
+/* Toast: debajo del carrito flotante, más pequeño */
 .toast {
   position: fixed;
-  bottom: 100px;
-  right: 20px;
+  bottom: 10px;
+  right: 10px;
+  left: 10px;
+  max-width: 320px;
+  margin-left: auto;
   background: #067902;
   color: #e9e6e6;
-  padding: 16px 24px;
+  padding: 8px 14px;
+  font-size: 0.8125rem;
   border-radius: 8px;
   box-shadow: 0 4px 12px rgba(0,0,0,.3);
-  z-index: 2000;
+  z-index: 1998;
   animation: slideIn .3s ease;
 }
 @keyframes slideIn {
