@@ -1846,10 +1846,16 @@ img{
 }
 .header-blanco.header-ariztia .pedido-link::after {
   background: transparent;
+  width: 0;
+  transition: width 0.25s ease, background 0.2s ease;
 }
 .header-blanco.header-ariztia .pedido-link:hover {
   color: #FFFFFF !important;
   opacity: 0.92;
+}
+.header-blanco.header-ariztia .pedido-link:hover::after {
+  background: #FFFFFF;
+  width: 100%;
 }
 .header-blanco.header-ariztia .menu-dd-btn.header-menu-btn,
 .header-blanco.header-ariztia .menu-dd-btn {
@@ -2824,6 +2830,22 @@ body * {
 #checkout-modal .bg-white,
 #admin-login-modal .bg-white {
   max-width: min(calc(100vw - 24px), 32rem);
+}
+/* Modales Delivery, Reservas y Retiros: ventana pequeña en PC, no canto a canto */
+#modal-delivery .bg-white,
+#modal-reservas .bg-white,
+#modal-retiros .bg-white {
+  max-width: min(calc(100vw - 24px), 28rem);
+  width: 100%;
+}
+@media (min-width: 768px) {
+  #modal-delivery .bg-white,
+  #modal-reservas .bg-white,
+  #modal-retiros .bg-white {
+    max-width: 28rem;
+    width: auto;
+    min-width: min(100%, 20rem);
+  }
 }
 #admin-panel-modal .bg-white {
   max-width: min(calc(100vw - 24px), 64rem);
